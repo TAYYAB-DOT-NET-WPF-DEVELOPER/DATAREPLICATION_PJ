@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:DataIntegration.ViewModels"
+                    xmlns:view="clr-namespace:DataIntegration.Views">
+
+    <DataTemplate DataType="{x:Type vm:LandingViewVM}">
+        <view:LandingView/>
+    </DataTemplate> 
+    
+
+
+
+</ResourceDictionary>
