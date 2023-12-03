@@ -1,4 +1,6 @@
 ﻿using DataIntegration.Models;
+using DataIntegration.Services;
+using DataIntegration.Stores;
 using DataIntegration.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -19,11 +21,10 @@ namespace DataIntegration
         {
             IServiceCollection services = new ServiceCollection();
             services.AddDbContext<OracleDbContext>();
-            /*
-            services.AddSingleton<GlobalVariablesClass>();
+            services.AddSingleton<DefaultValues>();
             services.AddSingleton<IMainService, MainService>();
-            */
             services.AddSingleton<LandingViewVM>();
+            services.AddSingleton<SettingsVM>();
             services.AddTransient<MainWindowVM>();
             services.AddTransient(s => new MainWindow
             {
@@ -36,7 +37,6 @@ namespace DataIntegration
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
 
             MainWindow = _serviceprovider.GetRequiredService<MainWindow>();
             MainWindow.Show();

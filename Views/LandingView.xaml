@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:DataIntegration.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" 
-            d:DesignWidth="365">
+            d:DesignWidth="550">
     <Grid>
         <ListView Grid.Row="1"
                                 BorderBrush="{DynamicResource Color3}"
@@ -19,14 +19,14 @@
             <ListView.View>
                 <GridView >
                     <GridView.Columns>
-                        <GridViewColumn Header="Description" Width="220">
+                        <GridViewColumn Header="Description" Width="320">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding ProdName}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Status" Width="80">
+                        <GridViewColumn Header="Status" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Costeach, StringFormat='{}Rs {0:F2}'}"/>

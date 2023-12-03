@@ -5,8 +5,12 @@
 
     <DataTemplate DataType="{x:Type vm:LandingViewVM}">
         <view:LandingView/>
-    </DataTemplate> 
-    
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:SettingsVM}">
+        <view:SettingsPage/>
+    </DataTemplate>
+
 
 
 

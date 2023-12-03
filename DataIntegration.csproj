@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <None Remove="Assets\Logo.png" />
-    <None Remove="Assets\Main-Image.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,13 +18,6 @@
 
   <ItemGroup>
     <Resource Include="Assets\Logo.png" />
-    <Resource Include="Assets\Main-Image.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DbContexts\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +28,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.12" />
+    <PackageReference Include="System.Data.Odbc" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

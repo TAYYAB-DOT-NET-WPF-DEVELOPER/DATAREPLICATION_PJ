@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Sheroz\Desktop\DataIntegration\obj\Debug\net6.0-windows\
+C:\Users\shahr\OneDrive\Desktop\Pixel DataIntegration\obj\Debug\net6.0-windows\
 DataIntegration
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-C:\Users\Sheroz\Desktop\DataIntegration\App.xaml
-10-1759220288
+C:\Users\shahr\OneDrive\Desktop\Pixel DataIntegration\App.xaml
+11312001871
 1877439002
-25-1827389617
-2101101055750
-Assets\Icons.xaml;MainWindow.xaml;Styles\ButtonStyles.xaml;Styles\ComboBoxStyle.xaml;Styles\MenuItemStyle.xaml;Styles\TabStyles.xaml;Styles\TextBoxStyle.xaml;Theme\MainTheme.xaml;Utilities\DataTemplates.xaml;Views\LandingView.xaml;
+35348352666
+2111570929838
+Assets\Icons.xaml;MainWindow.xaml;Styles\ButtonStyles.xaml;Styles\ComboBoxStyle.xaml;Styles\MenuItemStyle.xaml;Styles\TabStyles.xaml;Styles\TextBoxStyle.xaml;Theme\MainTheme.xaml;Utilities\DataTemplates.xaml;Views\LandingView.xaml;Views\SettingsPage.xaml;
 
-True
+False
 

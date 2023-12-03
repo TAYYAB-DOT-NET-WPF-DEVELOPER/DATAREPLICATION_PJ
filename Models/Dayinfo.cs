@@ -75,7 +75,7 @@ public partial class Dayinfo
 
     public string? Reexport { get; set; }
 
-    public string Opendate { get; set; } = null!;
+    public string? Opendate { get; set; } = null!;
 
     public int? Repgroup { get; set; }
 

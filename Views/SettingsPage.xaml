@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="DataIntegration.Views.SettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DataIntegration.Views"
+             mc:Ignorable="d" 
+            d:DesignHeight="300" 
+            d:DesignWidth="550">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Margin="5">
+            <TextBlock Text="Select Tables to Replicate" Foreground="{DynamicResource Color12}" FontWeight="SemiBold" FontSize="14"/>
+            <ItemsControl ItemsSource="{Binding AllTables}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Margin="5" Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+        <StackPanel Margin="5" Grid.Column="1">
+            <TextBlock Text="Replication Parameters" Foreground="{DynamicResource Color12}" FontWeight="SemiBold" FontSize="14"/>
+            <StackPanel Margin="5,10,0,0" Orientation="Horizontal">
+                <RadioButton Content="Days" IsChecked="{Binding IsDaysSelected}"/>
+                <RadioButton Margin="10,0,0,0" Content="Date" IsChecked="{Binding IsDateSelected}"/>
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding DateVisibility}" Margin="0,10,0,0" Grid.Column="1">
+                <TextBlock Text="Select Date to Replicate" Foreground="{DynamicResource Color12}"/>
+                <DatePicker SelectedDate="{Binding SelectedDate}" Width="170" HorizontalAlignment="Left"/>
+            </StackPanel>
+            <StackPanel Visibility="{Binding DaysVisibility}" Margin="0,10,0,0" Grid.Column="1">
+                <TextBlock Text="Select Days to Replicate" Foreground="{DynamicResource Color12}"/>
+                <TextBox Text="{Binding Days, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{DynamicResource TextBoxStyle}"
+                         Width="170"/>
+            </StackPanel>
+        </StackPanel>
+        
+            
+    </Grid>
+</UserControl>
