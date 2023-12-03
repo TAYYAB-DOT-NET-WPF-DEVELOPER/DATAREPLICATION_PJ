@@ -11,7 +11,7 @@
         <ListView Grid.Row="1"
                                 BorderBrush="{DynamicResource Color3}"
                                 BorderThickness="2"
-                                ItemsSource="{Binding OrderItemsCart}" 
+                                ItemsSource="{Binding Alllogs}" 
                                 MaxHeight="{Binding ActualHeight, ElementName=listview}"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 ScrollViewer.CanContentScroll="True"
@@ -22,21 +22,21 @@
                         <GridViewColumn Header="Description" Width="320">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ProdName}"/>
+                                    <TextBlock Text="{Binding Descript}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Status" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Costeach, StringFormat='{}Rs {0:F2}'}"/>
+                                    <TextBlock Text="{Binding Status}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="%" Width="50">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Quan}"/>
+                                    <TextBlock Text="{Binding ETA}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
