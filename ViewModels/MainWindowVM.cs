@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -98,11 +99,11 @@ namespace DataIntegration.ViewModels
         }
 
 
-        private void RunCode(object obj)
+        private  async void RunCode(object obj)
         {
             string typeofdata = "";
 
-            CurrentPage ??= _serviceProvider.GetRequiredService<LandingViewVM>();
+            CurrentPage = _serviceProvider.GetRequiredService<LandingViewVM>();
             _settingsvm = _serviceProvider.GetRequiredService<SettingsVM>();
 
             _selectedTables = new List<string>(_settingsvm.AllTables.Where(item => item.IsChecked == true).Select(item => item.Name));
@@ -141,9 +142,6 @@ namespace DataIntegration.ViewModels
                     _mainService.SaveDayInfo(dayinfo);
                     processedrows++;
                     dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
-
-
-
                 }
             }
             if (_selectedTables.Contains("POSDETAIL"))
@@ -159,14 +157,14 @@ namespace DataIntegration.ViewModels
                 _landingViewVM.Alllogs.Add(dayinfolog);
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Posdetail posdetail = new PosdetailProcessing().Posdetailprocessing(dr, 300);
+                    await Task.Run(() =>
+                    {
+                        Posdetail posdetail = new PosdetailProcessing().Posdetailprocessing(dr, 300);
 
-                    _mainService.SavePosdetail(posdetail);
-                    processedrows++;
-                    dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
-
-
-
+                        _mainService.SavePosdetail(posdetail);
+                        processedrows++;
+                        dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
+                    });
                 }
             }
 

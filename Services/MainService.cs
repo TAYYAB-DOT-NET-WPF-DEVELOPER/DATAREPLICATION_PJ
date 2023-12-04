@@ -33,7 +33,7 @@ namespace DataIntegration.Services
 
         public async Task SavePosdetail(Posdetail posdetail)
         {
-            var posdetailtocheck = _dbContext.Posdetails.FirstOrDefault(d => d.Opendate == posdetail.Opendate && d.Snum == posdetail.Snum);
+            var posdetailtocheck = _dbContext.Posdetails.FirstOrDefault(d => d.Opendate == posdetail.Opendate && d.Snum == posdetail.Snum && d.Uniqueid == posdetail.Uniqueid);
             if (posdetailtocheck is null)
             {
                 await _dbContext.AddAsync(posdetail);

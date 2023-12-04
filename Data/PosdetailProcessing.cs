@@ -38,8 +38,8 @@ namespace DataIntegration.Data
             posdetail.Linedes = dr["LINEDES"] != DBNull.Value ? dr["LINEDES"].ToString() : null;
             posdetail.Revcenter = dr["REVCENTER"] != DBNull.Value ? (int?)dr["REVCENTER"] : null;
             posdetail.Discount = dr["DISCOUNT"] != DBNull.Value ? (int?)(Convert.ToDouble(dr["DISCOUNT"])) : null;
-            posdetail.Authcode = dr["AUTHCODE"] != DBNull.Value ? (int?)dr["AUTHCODE"] : null;
-            posdetail.Repgroup = dr["REPGROUP"] != DBNull.Value ? (int?)dr["REPGROUP"] : null;
+            posdetail.Authcode = int.TryParse(dr["AUTHCODE"].ToString(), out int parsedAuthCode) ? (int?)parsedAuthCode : (int?)null;
+
             posdetail.Revcenter = dr["REVCENTER"] != DBNull.Value ? (int?)dr["REVCENTER"] : null;
 
             posdetail.Snum = 300;
