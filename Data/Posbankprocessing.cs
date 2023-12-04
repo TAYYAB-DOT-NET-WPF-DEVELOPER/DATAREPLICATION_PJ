@@ -21,23 +21,21 @@ namespace DataIntegration.Data
             posbank.Calctendered = (int?)Convert.ToDouble(dr["CALCTENDERED"]);
             posbank.Exchangerate = (int)Convert.ToDouble(dr["EXCHANGERATE"]);
             posbank.Dateentered = !string.IsNullOrEmpty(dr["DATEENTERED"].ToString()) ? Convert.ToDateTime(dr["DATEENTERED"]).ToString("dd-MM-yyyy hh:mm:ss") : null;
-            posbank.Entrytype = (int)dr["ENTRYTYPE"];
+            posbank.Entrytype = (int)(short)dr["ENTRYTYPE"];
             posbank.Refcode = dr["RefCode"].ToString();
             posbank.Opendate = dr["OPENDATE"] != DBNull.Value ? DateTime.TryParseExact(dr["OPENDATE"].ToString(), "dd-MMM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate) ? (DateTime?)parsedDate : null : null;
             posbank.Whoauth = (int?)dr["WhoAuth"];
             posbank.Plink = dr["PLink"].ToString();
-            posbank.Reasonid = (int?)dr["ReasonID"];
+            posbank.Reasonid = dr["ReasonID"] != DBNull.Value ? (int?)dr["ReasonID"] : null;
             posbank.Safenum = (int?)dr["SafeNum"];
             posbank.Floatnum = (int?)dr["FloatNum"];
             posbank.Denomnum = (int?)dr["DenomNum"];
             posbank.Wasprocessed = (int?)dr["WasProcessed"];
-            posbank.Isactive = (int)dr["IsActive"];
+            posbank.Isactive = (int)(short)dr["IsActive"];
             posbank.Statnum = (int?)dr["StatNum"];
-            posbank.Memcode = (int?)dr["MemCode"];
+            posbank.Memcode = dr["MemCode"]!= DBNull.Value ? (int?)dr["MemCode"] : null;
             posbank.Qlink = dr["QLink"].ToString();
-            posbank.Updatestatus = (int)dr["UPDATESTATUS"];
             posbank.Snum = 300;
-            posbank.CloudReflectionupdate = (int?)dr["Cloud_ReflectionUpdate"];
 
             return posbank;
         }

@@ -117,7 +117,7 @@ namespace DataIntegration.ViewModels
             {
                 var yestedaysDay = DateTime.Now.AddDays(-_days);
                 string olddate = yestedaysDay.ToString("yyyy-MM-dd");
-                typeofdata = " and OPENDATE >= '" + olddate + "';";
+                typeofdata = " and ENDDATE >= '" + olddate + "';";
             }
             if (_isdateselected)
             {
