@@ -1,0 +1,45 @@
+﻿using DataIntegration.Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataIntegration.Data
+{
+    public class Posbankprocessing
+    {
+        public Posbank processposbank(DataRow dr, int snum)
+        {
+            Posbank posbank = new Posbank();
+
+            posbank.Uniqueid = (int)dr["UNIQUEID"];
+            posbank.Punchindex = (int)dr["PUNCHINDEX"];
+            posbank.Methodnum = (int)dr["METHODNUM"];
+            posbank.Calctendered = (int?)Convert.ToDouble(dr["CALCTENDERED"]);
+            posbank.Exchangerate = (int)Convert.ToDouble(dr["EXCHANGERATE"]);
+            posbank.Dateentered = !string.IsNullOrEmpty(dr["DATEENTERED"].ToString()) ? Convert.ToDateTime(dr["DATEENTERED"]).ToString("dd-MM-yyyy hh:mm:ss") : null;
+            posbank.Entrytype = (int)dr["ENTRYTYPE"];
+            posbank.Refcode = dr["RefCode"].ToString();
+            posbank.Opendate = dr["OPENDATE"] != DBNull.Value ? DateTime.TryParseExact(dr["OPENDATE"].ToString(), "dd-MMM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate) ? (DateTime?)parsedDate : null : null;
+            posbank.Whoauth = (int?)dr["WhoAuth"];
+            posbank.Plink = dr["PLink"].ToString();
+            posbank.Reasonid = (int?)dr["ReasonID"];
+            posbank.Safenum = (int?)dr["SafeNum"];
+            posbank.Floatnum = (int?)dr["FloatNum"];
+            posbank.Denomnum = (int?)dr["DenomNum"];
+            posbank.Wasprocessed = (int?)dr["WasProcessed"];
+            posbank.Isactive = (int)dr["IsActive"];
+            posbank.Statnum = (int?)dr["StatNum"];
+            posbank.Memcode = (int?)dr["MemCode"];
+            posbank.Qlink = dr["QLink"].ToString();
+            posbank.Updatestatus = (int)dr["UPDATESTATUS"];
+            posbank.Snum = 300;
+            posbank.CloudReflectionupdate = (int?)dr["Cloud_ReflectionUpdate"];
+
+            return posbank;
+        }
+    }
+}

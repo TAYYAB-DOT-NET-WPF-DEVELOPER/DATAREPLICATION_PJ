@@ -1,0 +1,36 @@
+﻿using DataIntegration.Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataIntegration.Data
+{
+    public class Employeeprocessing
+    {
+        public Employee processemployee(DataRow dr, int snum)
+        {
+            Employee employee = new Employee();
+
+            employee.Empnum = (int)dr["Empnum"];
+            employee.Empname = dr["Empname"].ToString();
+            employee.Emplastname = dr["Emplastname"].ToString();
+            employee.Dateentered = !string.IsNullOrEmpty(dr["Dateentered"].ToString()) ? dr["Dateentered"].ToString() : null;
+            employee.Adress1 = dr["Adress1"].ToString();
+            employee.Adress2 = dr["Adress2"].ToString();
+            employee.Startwork = !string.IsNullOrEmpty(dr["Startwork"].ToString()) ? dr["Startwork"].ToString() : null;
+            employee.Endwork = !string.IsNullOrEmpty(dr["Endwork"].ToString()) ? dr["Endwork"].ToString() : null;
+            employee.Isactive = !string.IsNullOrEmpty(dr["Isactive"].ToString()) ? dr["Isactive"].ToString() : null;
+            employee.Posname = dr["Posname"].ToString();
+            employee.Empposition = (int?)dr["Empposition"];
+            employee.Hourlywage = (int?)dr["Hourlywage"];
+            employee.Gender = dr["Gender"].ToString();
+            employee.Storeid = (int)dr["Storeid"];
+            employee.Sin = dr["Sin"].ToString();
+            employee.Horepgroups = dr["Horepgroups"].ToString();
+            return employee;
+        }
+    }
+}

@@ -13,5 +13,11 @@ namespace DataIntegration.Services
         Task DeleteDayinfo(string opendate, int? snum);
         Task SavePosdetail(Posdetail posdetail);
         Task SavePosheader(Posheader posheader);
+        Task SavePosbank(Posbank posbank);
+        Task SavePunchpayroll(Punchpayroll punchpayroll);
+        Task SaveStocktakedetail(Stocktakedetail storetakedetail);
+        Task SaveEmployee(Employee employee);
+        Task DeleteEmployee(int Empnum);
+        Task DeletePosbank(DateTime? Opendate);
     }
 }

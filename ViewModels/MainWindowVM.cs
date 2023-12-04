@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -145,6 +146,7 @@ namespace DataIntegration.ViewModels
                         dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
                     });
                 }
+                dayinfolog.Status = "Done";
             }
             if (_selectedTables.Contains("POSDETAIL"))
             {
@@ -189,8 +191,102 @@ namespace DataIntegration.ViewModels
                         dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
                     });
                 }
+                dayinfolog.Status = "Done";
             }
-
+            if (_selectedTables.Contains("POSBANK"))
+            {
+                ListViewModel posbanklog = new ListViewModel();
+                posbanklog.Descript = "Processing Posbank Table...";
+                posbanklog.Status = "Processing";
+                posbanklog.ETA = "0 %";
+                string query = _querystrings.POSBANK + typeofdata;
+                DataTable dt = ODBCHelper.SelectRec(query);
+                int totalrows = dt.Rows.Count;
+                int processedrows = 0;
+                _landingViewVM.Alllogs.Add(posbanklog);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    await Task.Run(() =>
+                    {
+                        Posbank posbank = new Posbankprocessing().processposbank(dr, 300);
+                        _mainService.DeletePosbank(posbank.Opendate);
+                        _mainService.SavePosbank(posbank);
+                        processedrows++;
+                        posbanklog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
+                    });
+                }
+                posbanklog.Status = "Done";
+            }
+            if (_selectedTables.Contains("PUNCHPAYROLL"))
+            {
+                ListViewModel punchpayrolllog = new ListViewModel();
+                punchpayrolllog.Descript = "Processing PunchPayroll Table...";
+                punchpayrolllog.Status = "Processing";
+                punchpayrolllog.ETA = "0 %";
+                string query = _querystrings.PUNCHPAYROLL + typeofdata;
+                DataTable dt = ODBCHelper.SelectRec(query);
+                int totalrows = dt.Rows.Count;
+                int processedrows = 0;
+                _landingViewVM.Alllogs.Add(punchpayrolllog);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    await Task.Run(() =>
+                    {
+                        Punchpayroll punchpayroll = new Punchpayrollprocessing().processpunchpayroll(dr, 300);
+                        _mainService.SavePunchpayroll(punchpayroll);
+                        processedrows++;
+                        punchpayrolllog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
+                    });
+                }
+                punchpayrolllog.Status = "Done";
+            }
+            if (_selectedTables.Contains("STOCKTAKEDETAIL"))
+            {
+                ListViewModel stocktakedetaillog = new ListViewModel();
+                stocktakedetaillog.Descript = "Processing Stocktakedetail Table...";
+                stocktakedetaillog.Status = "Processing";
+                stocktakedetaillog.ETA = "0 %";
+                string query = _querystrings.STOCKTAKEDETAIL + typeofdata;
+                DataTable dt = ODBCHelper.SelectRec(query);
+                int totalrows = dt.Rows.Count;
+                int processedrows = 0;
+                _landingViewVM.Alllogs.Add(stocktakedetaillog);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    await Task.Run(() =>
+                    {
+                        Stocktakedetail stocktakedetail = new Stocktakedetailprocessing().processstocktakedeatil(dr, 300);
+                        _mainService.SaveStocktakedetail(stocktakedetail);
+                        processedrows++;
+                        stocktakedetaillog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
+                    });
+                }
+                stocktakedetaillog.Status = "Done";
+            }
+            if (_selectedTables.Contains("EMPLOYEE"))
+            {
+                ListViewModel employeelog = new ListViewModel();
+                employeelog.Descript = "Processing Employees Table...";
+                employeelog.Status = "Processing";
+                employeelog.ETA = "0 %";
+                string query = _querystrings.EMPLOYEE + typeofdata;
+                DataTable dt = ODBCHelper.SelectRec(query);
+                int totalrows = dt.Rows.Count;
+                int processedrows = 0;
+                _landingViewVM.Alllogs.Add(employeelog);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    await Task.Run(() =>
+                    {
+                        Employee employee = new Employeeprocessing().processemployee(dr, 300);
+                        _mainService.DeleteEmployee(employee.Empnum);
+                        _mainService.SaveEmployee(employee);
+                        processedrows++;
+                        employeelog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
+                    });
+                }
+                employeelog.Status = "Done";
+            }
         }
     }
 }

@@ -43,7 +43,7 @@ namespace DataIntegration.Stores
             {"QCC", 1}
         };
         public int defaultdays = 1;
-        public List<string> tables = new List<string> { "DAYINFO", "EMPLOYEE", "JOBPOS", "POSBANK", "POSDETAIL", "POSHEADER", "PUNCHCLOCK", "PUNCHPAYROLL", "SALESTYPE", "STOCKTAKEDETAIL" };
+        public List<string> tables = new List<string> { "DAYINFO", "POSDETAIL", "POSHEADER", "POSBANK", "PUNCHPAYROLL", "STOCKTAKEDETAIL", "EMPLOYEE"};
         public ObservableCollection<DataTables> AllTables = new ObservableCollection<DataTables>();
 
         public DefaultValues()
