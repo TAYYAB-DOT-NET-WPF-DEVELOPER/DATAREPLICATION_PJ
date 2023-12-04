@@ -1,4 +1,5 @@
 ﻿using DataIntegration.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,9 +27,20 @@ namespace DataIntegration.Services
 
         public async Task SaveDayInfo(Dayinfo dayinfo)
         {
-            _dbContext.AddAsync(dayinfo);
+            await _dbContext.AddAsync(dayinfo);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task SavePosdetail(Posdetail posdetail)
+        {
+            var posdetailtocheck = _dbContext.Posdetails.FirstOrDefault(d => d.Opendate == posdetail.Opendate && d.Snum == posdetail.Snum);
+            if (posdetailtocheck is null)
+            {
+                await _dbContext.AddAsync(posdetail);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
 
     }
 }

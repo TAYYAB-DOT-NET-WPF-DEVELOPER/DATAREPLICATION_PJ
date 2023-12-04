@@ -146,6 +146,29 @@ namespace DataIntegration.ViewModels
 
                 }
             }
+            if (_selectedTables.Contains("POSDETAIL"))
+            {
+                ListViewModel dayinfolog = new ListViewModel();
+                dayinfolog.Descript = "Processing Posdetail Table...";
+                dayinfolog.Status = "Processing";
+                dayinfolog.ETA = "0 %";
+                string query = _querystrings.POSDETAIL + typeofdata;
+                DataTable dt = ODBCHelper.SelectRec(query);
+                int totalrows = dt.Rows.Count;
+                int processedrows = 0;
+                _landingViewVM.Alllogs.Add(dayinfolog);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Posdetail posdetail = new PosdetailProcessing().Posdetailprocessing(dr, 300);
+
+                    _mainService.SavePosdetail(posdetail);
+                    processedrows++;
+                    dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
+
+
+
+                }
+            }
 
 
         }
