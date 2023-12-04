@@ -11,7 +11,7 @@ namespace DataIntegration.Services
     {
         Task SaveDayInfo(Dayinfo dayinfo);
         Task DeleteDayinfo(string opendate, int? snum);
-
         Task SavePosdetail(Posdetail posdetail);
+        Task SavePosheader(Posheader posheader);
     }
 }

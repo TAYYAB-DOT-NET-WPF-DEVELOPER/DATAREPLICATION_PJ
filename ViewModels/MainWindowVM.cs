@@ -136,12 +136,14 @@ namespace DataIntegration.ViewModels
                 _landingViewVM.Alllogs.Add(dayinfolog);
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Dayinfo dayinfo = new Dayinfoprocessing().processdayinfo(dr, 300);
-
-                    _mainService.DeleteDayinfo(dayinfo.Opendate, dayinfo.Snum);
-                    _mainService.SaveDayInfo(dayinfo);
-                    processedrows++;
-                    dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
+                    await Task.Run(() =>
+                    {
+                        Dayinfo dayinfo = new Dayinfoprocessing().processdayinfo(dr, 300);
+                        _mainService.DeleteDayinfo(dayinfo.Opendate, dayinfo.Snum);
+                        _mainService.SaveDayInfo(dayinfo);
+                        processedrows++;
+                        dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
+                    });
                 }
             }
             if (_selectedTables.Contains("POSDETAIL"))
@@ -160,14 +162,34 @@ namespace DataIntegration.ViewModels
                     await Task.Run(() =>
                     {
                         Posdetail posdetail = new PosdetailProcessing().Posdetailprocessing(dr, 300);
-
                         _mainService.SavePosdetail(posdetail);
                         processedrows++;
                         dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
                     });
                 }
             }
-
+            if (_selectedTables.Contains("POSHEADER"))
+            {
+                ListViewModel dayinfolog = new ListViewModel();
+                dayinfolog.Descript = "Processing Posheader Table...";
+                dayinfolog.Status = "Processing";
+                dayinfolog.ETA = "0 %";
+                string query = _querystrings.POSHEADER + typeofdata;
+                DataTable dt = ODBCHelper.SelectRec(query);
+                int totalrows = dt.Rows.Count;
+                int processedrows = 0;
+                _landingViewVM.Alllogs.Add(dayinfolog);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    await Task.Run(() =>
+                    {
+                        Posheader posheader = new Posheaderdataprocessing().posheaderdataprocessing(dr, 300);
+                        _mainService.SavePosheader(posheader);
+                        processedrows++;
+                        dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
+                    });
+                }
+            }
 
         }
     }

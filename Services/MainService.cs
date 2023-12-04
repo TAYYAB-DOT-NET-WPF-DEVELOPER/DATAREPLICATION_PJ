@@ -40,7 +40,15 @@ namespace DataIntegration.Services
                 await _dbContext.SaveChangesAsync();
             }
         }
-
+        public async Task SavePosheader(Posheader posheader)
+        {
+            var posheadertocheck = _dbContext.Posheaders.FirstOrDefault(d => d.Opendate == posheader.Opendate && d.Snum == posheader.Snum && d.Transact == posheader.Transact);
+            if (posheadertocheck is null)
+            {
+                await _dbContext.AddAsync(posheader);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
 
     }
 }
