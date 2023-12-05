@@ -1,6 +1,7 @@
 ﻿using DataIntegration.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace DataIntegration.Data
 {
     public class Employeeprocessing
     {
-        public Employee processemployee(DataRow dr, int snum)
+        public Employee processemployee(DataRow dr)
         {
             Employee employee = new Employee();
 
@@ -26,7 +27,7 @@ namespace DataIntegration.Data
             employee.Posname = dr["Posname"].ToString();
             employee.Hourlywage = dr["Hourlywage"] != DBNull.Value ? (int?)(Convert.ToDouble(dr["Hourlywage"])) : null;
             employee.Gender = dr["Gender"].ToString();
-            employee.Storeid =300;
+            employee.Storeid = Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString());
             employee.Sin = dr["Sin"].ToString();
             return employee;
         }

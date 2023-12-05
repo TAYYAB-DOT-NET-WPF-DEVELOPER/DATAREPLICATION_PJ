@@ -1,6 +1,7 @@
 ﻿using DataIntegration.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace DataIntegration.Data
 {
     public class PosdetailProcessing
     {
-        public Posdetail Posdetailprocessing(DataRow dr, int snum)
+        public Posdetail Posdetailprocessing(DataRow dr)
         {
             Posdetail posdetail = new Posdetail();
 
@@ -42,7 +43,7 @@ namespace DataIntegration.Data
 
             posdetail.Revcenter = dr["REVCENTER"] != DBNull.Value ? (int?)dr["REVCENTER"] : null;
 
-            posdetail.Snum = 300;
+            posdetail.Snum = Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString());
 
             return posdetail;
         }

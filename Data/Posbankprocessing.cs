@@ -1,6 +1,7 @@
 ﻿using DataIntegration.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace DataIntegration.Data
 {
     public class Posbankprocessing
     {
-        public Posbank processposbank(DataRow dr, int snum)
+        public Posbank processposbank(DataRow dr)
         {
             Posbank posbank = new Posbank();
 
@@ -35,7 +36,7 @@ namespace DataIntegration.Data
             posbank.Statnum = (int?)dr["StatNum"];
             posbank.Memcode = dr["MemCode"]!= DBNull.Value ? (int?)dr["MemCode"] : null;
             posbank.Qlink = dr["QLink"].ToString();
-            posbank.Snum = 300;
+            posbank.Snum = Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString());
 
             return posbank;
         }

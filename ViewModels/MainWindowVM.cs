@@ -8,6 +8,7 @@ using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Security.Cryptography.Xml;
@@ -28,7 +29,8 @@ namespace DataIntegration.ViewModels
         private QueryStrings _querystrings;
 
         private string _clock;
-        private string _currentdate = DateTime.Now.ToString("dd-MMM-yyyy");
+        private string _storename;
+        private string _currentdate;
         private Timer _timer;
         private object _currentpage;
 
@@ -61,6 +63,15 @@ namespace DataIntegration.ViewModels
                 OnPropertyChanged(nameof(BusinessDate));
             }
         }
+        public string Storename
+        {
+            get { return _storename; }
+            set
+            {
+                _storename = value;
+                OnPropertyChanged(nameof(Storename));
+            }
+        }
 
         public ICommand CloseWindowCommand { get; }
         public ICommand SettingsPageCommand { get; }
@@ -78,6 +89,9 @@ namespace DataIntegration.ViewModels
             RunCodeCommand = new RelayCommand(RunCode);
             
             _querystrings = new QueryStrings();
+            //DateTime dateTime = ODBCHelper.GetMaxopendatetable();
+            //BusinessDate = dateTime.ToString("dd-MMM-yyyy");
+            Storename = new DefaultValues().SMLOC[Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString())];
             InitializeTimer();
         }
         private void Settingspage(object obj)
@@ -140,7 +154,7 @@ namespace DataIntegration.ViewModels
                 {
                     await Task.Run(() =>
                     {
-                        Dayinfo dayinfo = new Dayinfoprocessing().processdayinfo(dr, 300);
+                        Dayinfo dayinfo = new Dayinfoprocessing().processdayinfo(dr);
                         _mainService.DeleteDayinfo(dayinfo.Opendate, dayinfo.Snum);
                         _mainService.SaveDayInfo(dayinfo);
                         processedrows++;
@@ -165,7 +179,7 @@ namespace DataIntegration.ViewModels
                 {
                     await Task.Run(() =>
                     {
-                        Posdetail posdetail = new PosdetailProcessing().Posdetailprocessing(dr, 300);
+                        Posdetail posdetail = new PosdetailProcessing().Posdetailprocessing(dr);
                         _mainService.SavePosdetail(posdetail);
                         processedrows++;
                         dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
@@ -189,7 +203,7 @@ namespace DataIntegration.ViewModels
                 {
                     await Task.Run(() =>
                     {
-                        Posheader posheader = new Posheaderdataprocessing().posheaderdataprocessing(dr, 300);
+                        Posheader posheader = new Posheaderdataprocessing().posheaderdataprocessing(dr);
                         _mainService.SavePosheader(posheader);
                         processedrows++;
                         dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
@@ -213,7 +227,7 @@ namespace DataIntegration.ViewModels
                 {
                     await Task.Run(() =>
                     {
-                        Posbank posbank = new Posbankprocessing().processposbank(dr, 300);
+                        Posbank posbank = new Posbankprocessing().processposbank(dr);
                         _mainService.DeletePosbank(posbank.Opendate);
                         _mainService.SavePosbank(posbank);
                         processedrows++;
@@ -238,7 +252,7 @@ namespace DataIntegration.ViewModels
                 {
                     await Task.Run(() =>
                     {
-                        Punchpayroll punchpayroll = new Punchpayrollprocessing().processpunchpayroll(dr, 300);
+                        Punchpayroll punchpayroll = new Punchpayrollprocessing().processpunchpayroll(dr);
                         _mainService.SavePunchpayroll(punchpayroll);
                         processedrows++;
                         punchpayrolllog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
@@ -262,7 +276,7 @@ namespace DataIntegration.ViewModels
                 {
                     await Task.Run(() =>
                     {
-                        Stocktakedetail stocktakedetail = new Stocktakedetailprocessing().processstocktakedeatil(dr, 300);
+                        Stocktakedetail stocktakedetail = new Stocktakedetailprocessing().processstocktakedeatil(dr);
                         _mainService.SaveStocktakedetail(stocktakedetail);
                         processedrows++;
                         stocktakedetaillog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
@@ -285,7 +299,7 @@ namespace DataIntegration.ViewModels
                 {
                     await Task.Run(() =>
                     {
-                        Employee employee = new Employeeprocessing().processemployee(dr, 300);
+                        Employee employee = new Employeeprocessing().processemployee(dr);
                         _mainService.DeleteEmployee(employee.Empnum);
                         _mainService.SaveEmployee(employee);
                         processedrows++;

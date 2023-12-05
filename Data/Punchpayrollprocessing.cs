@@ -1,6 +1,7 @@
 ﻿using DataIntegration.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace DataIntegration.Data
 {
     public class Punchpayrollprocessing
     {
-        public Punchpayroll processpunchpayroll(DataRow dr, int snum)
+        public Punchpayroll processpunchpayroll(DataRow dr)
         {
             Punchpayroll punchpayroll = new Punchpayroll();
 
@@ -47,7 +48,7 @@ namespace DataIntegration.Data
             punchpayroll.Revcenter = (int?)dr["Revcenter"];
             punchpayroll.Numnosale = (int?)dr["Numnosale"];
             punchpayroll.Tillbalance = dr["Tillbalance"] != DBNull.Value ? Convert.ToInt32((double)dr["Tillbalance"]) : null;
-            punchpayroll.Storeid = 300;
+            punchpayroll.Storeid = Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString());
             return punchpayroll;
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 
@@ -23,7 +24,19 @@ namespace DataIntegration.Data
                 return dt;
             }
         }
+        public static DateTime GetMaxopendatetable()
+        {
+            OdbcConnection con = ODBCHelper.GetCon();
+            using (con)
+            {
+                string query = "SELECT max(opendate) FROM dba.dayinfo where timeend is not null";
+                DataTable result = SelectRec(query);
+                return (DateTime)result.Rows[0][0];
+                //DateTime dt = new DateTime(2023, 10, 01);
+                //return dt;
+            }
 
+        }
         public static DataTable SelectRecId(string query, params OdbcParameter[] parmerter)
         {
             OdbcConnection con = ODBCHelper.GetCon();

@@ -81,7 +81,7 @@
                 <Border CornerRadius="5" Grid.Row="3" Grid.ColumnSpan="4" BorderBrush="{DynamicResource Color3}" BorderThickness="1">
                 </Border>
                 <Border CornerRadius="5" Margin="5" Grid.Row="3" Grid.Column="0" Background="{DynamicResource Color3}">
-                    <TextBlock Text= "HO Replication" FontWeight="SemiBold" Foreground="{DynamicResource Color0}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text= "{Binding Storename}" FontWeight="SemiBold" Foreground="{DynamicResource Color0}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
                 <Border CornerRadius="5" Margin="5" Grid.Row="3" Grid.Column="1" Background="{DynamicResource Color3}">
                     <TextBlock Text= "{Binding BusinessDate}" FontWeight="SemiBold" Foreground="{DynamicResource Color0}" HorizontalAlignment="Center" VerticalAlignment="Center"/>

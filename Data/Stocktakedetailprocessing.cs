@@ -1,6 +1,7 @@
 ﻿using DataIntegration.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace DataIntegration.Data
 {
     public class Stocktakedetailprocessing
     {
-        public Stocktakedetail processstocktakedeatil(DataRow dr, int snum)
+        public Stocktakedetail processstocktakedeatil(DataRow dr)
         {
             Stocktakedetail stocktakedetail = new Stocktakedetail();
 
@@ -33,7 +34,7 @@ namespace DataIntegration.Data
             stocktakedetail.Shortvalue = dr["Shortvalue"].ToString();
             stocktakedetail.Warehousenum = dr["Warehousenum"].ToString();
             stocktakedetail.Reason = dr["Reason"].ToString();
-            stocktakedetail.Snum = 300;
+            stocktakedetail.Snum = Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString());
             stocktakedetail.Plink = dr["Plink"].ToString();
             stocktakedetail.Storetransferout = dr["Storetransferout"].ToString();
             stocktakedetail.Qtyintransfer = dr["Qtyintransfer"].ToString();

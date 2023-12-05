@@ -1,6 +1,7 @@
 ﻿using DataIntegration.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace DataIntegration.Data
 {
     public class Posheaderdataprocessing
     {
-        public Posheader posheaderdataprocessing(DataRow dr, int snum)
+        public Posheader posheaderdataprocessing(DataRow dr)
         {
             Posheader posheader = new Posheader();
 
@@ -42,7 +43,7 @@ namespace DataIntegration.Data
             posheader.Numprintedfinal = dr["NUMPRINTEDFINAL"] != DBNull.Value ? (int?)(short)dr["NUMPRINTEDFINAL"] : null;
             posheader.Refid = dr["REFID"] != DBNull.Value ? dr["REFID"].ToString() : null;
 
-            posheader.Snum = 300;
+            posheader.Snum = Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString()); ;
 
             return posheader;
         }

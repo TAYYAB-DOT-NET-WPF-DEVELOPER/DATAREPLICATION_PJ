@@ -1,12 +1,13 @@
 ﻿using DataIntegration.Models;
 using System;
+using System.Configuration;
 using System.Data;
 
 namespace DataIntegration.Data
 {
     public class Dayinfoprocessing
     {
-        public Dayinfo processdayinfo(DataRow dr, int snum)
+        public Dayinfo processdayinfo(DataRow dr)
         {
             Dayinfo dayinfo = new Dayinfo();
 
@@ -50,7 +51,7 @@ namespace DataIntegration.Data
             dayinfo.Reexport = dr["REEXPORT"].ToString();
 
 
-            dayinfo.Snum = 300;
+            dayinfo.Snum = Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString());
             dayinfo.Opendate = !string.IsNullOrEmpty(dr["OPENDATE"].ToString()) ? Convert.ToDateTime(dr["OPENDATE"]).ToString("dd-MM-yyyy") : null;
 
 
