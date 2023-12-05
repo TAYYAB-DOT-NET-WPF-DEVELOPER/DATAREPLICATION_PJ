@@ -24,12 +24,10 @@ namespace DataIntegration.Data
             employee.Endwork = !string.IsNullOrEmpty(dr["Endwork"].ToString()) ? dr["Endwork"].ToString() : null;
             employee.Isactive = !string.IsNullOrEmpty(dr["Isactive"].ToString()) ? dr["Isactive"].ToString() : null;
             employee.Posname = dr["Posname"].ToString();
-            employee.Empposition = (int?)dr["Empposition"];
-            employee.Hourlywage = (int?)dr["Hourlywage"];
+            employee.Hourlywage = dr["Hourlywage"] != DBNull.Value ? (int?)(Convert.ToDouble(dr["Hourlywage"])) : null;
             employee.Gender = dr["Gender"].ToString();
-            employee.Storeid = (int)dr["Storeid"];
+            employee.Storeid =300;
             employee.Sin = dr["Sin"].ToString();
-            employee.Horepgroups = dr["Horepgroups"].ToString();
             return employee;
         }
     }
