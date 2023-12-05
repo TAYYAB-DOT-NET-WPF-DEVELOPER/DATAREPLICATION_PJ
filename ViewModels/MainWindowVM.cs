@@ -117,12 +117,12 @@ namespace DataIntegration.ViewModels
             {
                 var yestedaysDay = DateTime.Now.AddDays(-_days);
                 string olddate = yestedaysDay.ToString("yyyy-MM-dd");
-                typeofdata = " and ENDDATE >= '" + olddate + "';";
+                typeofdata = " >= '" + olddate + "';";
             }
             if (_isdateselected)
             {
                 string olddate = _date.ToString("yyyy-MM-dd");
-                typeofdata = " and OPENDATE = '" + olddate + "';";
+                typeofdata = " = '" + olddate + "';";
             }
             if (_selectedTables.Contains("DAYINFO"))
             {
@@ -130,7 +130,8 @@ namespace DataIntegration.ViewModels
                 dayinfolog.Descript = "Processing DayInfo Table...";
                 dayinfolog.Status = "Processing";
                 dayinfolog.ETA = "0 %";
-                string query = _querystrings.DAYINFO + typeofdata;
+                string datetype = " and OPENDATE";
+                string query = _querystrings.DAYINFO + datetype + typeofdata;
                 DataTable dt = ODBCHelper.SelectRec(query);
                 int totalrows = dt.Rows.Count;
                 int processedrows = 0;
@@ -154,7 +155,8 @@ namespace DataIntegration.ViewModels
                 dayinfolog.Descript = "Processing Posdetail Table...";
                 dayinfolog.Status = "Processing";
                 dayinfolog.ETA = "0 %";
-                string query = _querystrings.POSDETAIL + typeofdata;
+                string datetype = " and OPENDATE";
+                string query = _querystrings.POSDETAIL + datetype + typeofdata;
                 DataTable dt = ODBCHelper.SelectRec(query);
                 int totalrows = dt.Rows.Count;
                 int processedrows = 0;
@@ -169,6 +171,7 @@ namespace DataIntegration.ViewModels
                         dayinfolog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";
                     });
                 }
+                dayinfolog.Status = "Done";
             }
             if (_selectedTables.Contains("POSHEADER"))
             {
@@ -176,7 +179,8 @@ namespace DataIntegration.ViewModels
                 dayinfolog.Descript = "Processing Posheader Table...";
                 dayinfolog.Status = "Processing";
                 dayinfolog.ETA = "0 %";
-                string query = _querystrings.POSHEADER + typeofdata;
+                string datetype = " and OPENDATE";
+                string query = _querystrings.POSHEADER + datetype + typeofdata;
                 DataTable dt = ODBCHelper.SelectRec(query);
                 int totalrows = dt.Rows.Count;
                 int processedrows = 0;
@@ -199,7 +203,8 @@ namespace DataIntegration.ViewModels
                 posbanklog.Descript = "Processing Posbank Table...";
                 posbanklog.Status = "Processing";
                 posbanklog.ETA = "0 %";
-                string query = _querystrings.POSBANK + typeofdata;
+                string datetype = " and OPENDATE";
+                string query = _querystrings.POSBANK + datetype + typeofdata;
                 DataTable dt = ODBCHelper.SelectRec(query);
                 int totalrows = dt.Rows.Count;
                 int processedrows = 0;
@@ -223,7 +228,8 @@ namespace DataIntegration.ViewModels
                 punchpayrolllog.Descript = "Processing PunchPayroll Table...";
                 punchpayrolllog.Status = "Processing";
                 punchpayrolllog.ETA = "0 %";
-                string query = _querystrings.PUNCHPAYROLL + typeofdata;
+                string datetype = " and OPENDATE";
+                string query = _querystrings.PUNCHPAYROLL + datetype + typeofdata;
                 DataTable dt = ODBCHelper.SelectRec(query);
                 int totalrows = dt.Rows.Count;
                 int processedrows = 0;
@@ -246,7 +252,8 @@ namespace DataIntegration.ViewModels
                 stocktakedetaillog.Descript = "Processing Stocktakedetail Table...";
                 stocktakedetaillog.Status = "Processing";
                 stocktakedetaillog.ETA = "0 %";
-                string query = _querystrings.STOCKTAKEDETAIL + typeofdata;
+                string datetype = " and ENDDATE";
+                string query = _querystrings.STOCKTAKEDETAIL + datetype + typeofdata;
                 DataTable dt = ODBCHelper.SelectRec(query);
                 int totalrows = dt.Rows.Count;
                 int processedrows = 0;
@@ -269,7 +276,7 @@ namespace DataIntegration.ViewModels
                 employeelog.Descript = "Processing Employees Table...";
                 employeelog.Status = "Processing";
                 employeelog.ETA = "0 %";
-                string query = _querystrings.EMPLOYEE + typeofdata;
+                string query = _querystrings.EMPLOYEE;
                 DataTable dt = ODBCHelper.SelectRec(query);
                 int totalrows = dt.Rows.Count;
                 int processedrows = 0;

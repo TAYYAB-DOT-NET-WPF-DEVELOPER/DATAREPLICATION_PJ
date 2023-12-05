@@ -49,7 +49,7 @@ namespace DataIntegration.Stores
                                         FROM DBA.STOCKTAKEDETAIL WHERE UNIQUEID IS NOT NULL";
         public string EMPLOYEE = @"SELECT EMPNUM, EMPNAME, EMPLASTNAME, DATEENTERED,
                                    ADRESS1, ADRESS2, STARTWORK, ENDWORK, ISACTIVE, POSNAME,
-                                   EMPOSITION, HOURLYWAGE, GENDER, SIN, HOREPGROUPS, SNUM
+                                   HOURLYWAGE, GENDER, SIN, SNUM
                                    FROM DBA.EMPLOYEE";
 
     }
