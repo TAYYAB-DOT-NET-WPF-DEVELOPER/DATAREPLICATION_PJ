@@ -28,6 +28,7 @@ namespace DataIntegration.ViewModels
         private SettingsVM _settingsvm;
         private QueryStrings _querystrings;
 
+        private DateTime _opendate;
         private string _clock;
         private string _storename;
         private string _currentdate;
@@ -89,8 +90,8 @@ namespace DataIntegration.ViewModels
             RunCodeCommand = new RelayCommand(RunCode);
             
             _querystrings = new QueryStrings();
-            //DateTime dateTime = ODBCHelper.GetMaxopendatetable();
-            //BusinessDate = dateTime.ToString("dd-MMM-yyyy");
+            _opendate = ODBCHelper.GetMaxopendatetable();
+            BusinessDate = _opendate.ToString("dd-MMM-yyyy");
             Storename = new DefaultValues().SMLOC[Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString())];
             InitializeTimer();
         }
@@ -131,12 +132,12 @@ namespace DataIntegration.ViewModels
             {
                 var yestedaysDay = DateTime.Now.AddDays(-_days);
                 string olddate = yestedaysDay.ToString("yyyy-MM-dd");
-                typeofdata = " >= '" + olddate + "';";
+                typeofdata = " between '" + olddate + "' and '" + _opendate.ToString("yyyy-MM-dd") + "'";
             }
             if (_isdateselected)
             {
                 string olddate = _date.ToString("yyyy-MM-dd");
-                typeofdata = " = '" + olddate + "';";
+                typeofdata = " between '" + olddate + "' and '" + _opendate.ToString("yyyy-MM-dd") + "'";
             }
             if (_selectedTables.Contains("DAYINFO"))
             {
