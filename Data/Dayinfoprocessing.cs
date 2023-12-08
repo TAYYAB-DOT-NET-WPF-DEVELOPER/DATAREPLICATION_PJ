@@ -11,7 +11,7 @@ namespace DataIntegration.Data
         {
             Dayinfo dayinfo = new Dayinfo();
 
-            dayinfo.Transdate = !string.IsNullOrEmpty(dr["TRANSDATE"].ToString()) ? Convert.ToDateTime(dr["TRANSDATE"]).ToString("dd-MM-yyyy hh:mm:ss") : null;
+            dayinfo.Transdate = !string.IsNullOrEmpty(dr["TRANSDATE"].ToString()) ? Convert.ToDateTime(dr["TRANSDATE"]).ToString("dd-MM-yyyy") : null;
             dayinfo.Timestart = !string.IsNullOrEmpty(dr["TIMESTART"].ToString()) ? Convert.ToDateTime(dr["TIMESTART"]).ToString("dd-MM-yyyy hh:mm:ss") : null;
             dayinfo.Timeend = !string.IsNullOrEmpty(dr["TIMEEND"].ToString()) ? Convert.ToDateTime(dr["TIMEEND"]).ToString("dd-MM-yyyy hh:mm:ss") : null;
             dayinfo.Transend = dr["TRANSEND"].ToString();

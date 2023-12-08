@@ -24,7 +24,7 @@ namespace DataIntegration.Data
             posbank.Dateentered = !string.IsNullOrEmpty(dr["DATEENTERED"].ToString()) ? Convert.ToDateTime(dr["DATEENTERED"]).ToString("dd-MM-yyyy hh:mm:ss") : null;
             posbank.Entrytype = (int)(short)dr["ENTRYTYPE"];
             posbank.Refcode = dr["RefCode"].ToString();
-            posbank.Opendate = dr["OPENDATE"] != DBNull.Value ? DateTime.TryParseExact(dr["OPENDATE"].ToString(), "dd-MMM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate) ? (DateTime?)parsedDate : null : null;
+            posbank.Opendate = dr["OPENDATE"] != DBNull.Value ? (DateTime?)dr["OPENDATE"] : null;
             posbank.Whoauth = (int?)dr["WhoAuth"];
             posbank.Plink = dr["PLink"].ToString();
             posbank.Reasonid = dr["ReasonID"] != DBNull.Value ? (int?)dr["ReasonID"] : null;

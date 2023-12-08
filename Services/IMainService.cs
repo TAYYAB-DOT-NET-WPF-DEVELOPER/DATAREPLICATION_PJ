@@ -18,6 +18,6 @@ namespace DataIntegration.Services
         Task SaveStocktakedetail(Stocktakedetail storetakedetail);
         Task SaveEmployee(Employee employee);
         Task DeleteEmployee(int Empnum);
-        Task DeletePosbank(DateTime? Opendate);
+        Task DeletePosbank(Posbank posbank);
     }
 }

@@ -90,7 +90,7 @@ namespace DataIntegration.ViewModels
             RunCodeCommand = new RelayCommand(RunCode);
             
             _querystrings = new QueryStrings();
-            //_opendate = ODBCHelper.GetMaxopendatetable();
+            _opendate = ODBCHelper.GetMaxopendatetable();
             _opendate = DateTime.Now;
             BusinessDate = _opendate.ToString("dd-MMM-yyyy");
             Storename = new DefaultValues().SMLOC[Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString())];
@@ -230,7 +230,7 @@ namespace DataIntegration.ViewModels
                     await Task.Run(() =>
                     {
                         Posbank posbank = new Posbankprocessing().processposbank(dr);
-                        _mainService.DeletePosbank(posbank.Opendate);
+                        _mainService.DeletePosbank(posbank);
                         _mainService.SavePosbank(posbank);
                         processedrows++;
                         posbanklog.ETA = Math.Round(((double)processedrows / totalrows) * 100).ToString() + " %";

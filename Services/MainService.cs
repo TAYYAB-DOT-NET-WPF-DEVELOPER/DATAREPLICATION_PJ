@@ -1,5 +1,6 @@
 ﻿using DataIntegration.Models;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -93,9 +94,9 @@ namespace DataIntegration.Services
                 await _dbContext.SaveChangesAsync();
             }
         }
-        public async Task DeletePosbank(DateTime? Opendate)
+        public async Task DeletePosbank(Posbank posbank)
         {
-            var posbanktodelete = _dbContext.Posbanks.FirstOrDefault(d => d.Opendate == Opendate);
+            var posbanktodelete = _dbContext.Posbanks.FirstOrDefault(d => d.Opendate == posbank.Opendate && d.Snum == posbank.Snum && d.Uniqueid == posbank.Uniqueid);
 
             if (posbanktodelete != null)
             {
