@@ -90,7 +90,8 @@ namespace DataIntegration.ViewModels
             RunCodeCommand = new RelayCommand(RunCode);
             
             _querystrings = new QueryStrings();
-            _opendate = ODBCHelper.GetMaxopendatetable();
+            //_opendate = ODBCHelper.GetMaxopendatetable();
+            _opendate = DateTime.Now;
             BusinessDate = _opendate.ToString("dd-MMM-yyyy");
             Storename = new DefaultValues().SMLOC[Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString())];
             InitializeTimer();
@@ -137,7 +138,7 @@ namespace DataIntegration.ViewModels
             if (_isdateselected)
             {
                 string olddate = _date.ToString("yyyy-MM-dd");
-                typeofdata = " between '" + olddate + "' and '" + _opendate.ToString("yyyy-MM-dd") + "'";
+                typeofdata = " = '" + olddate + "'";
             }
             if (_selectedTables.Contains("DAYINFO"))
             {

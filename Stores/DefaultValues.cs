@@ -39,6 +39,7 @@ namespace DataIntegration.Stores
             { 27, "BT-P7 RWP" },
             { 28, "DHA2 ISB" },
             { 29, "Gujranwala 2" },
+            { 999, "Hussain Chowk" },
             { 0, "Head Office" },
             { 1, "QCC" }
         };

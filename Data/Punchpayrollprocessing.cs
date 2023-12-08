@@ -22,7 +22,7 @@ namespace DataIntegration.Data
             punchpayroll.Origpayrate = dr["Origpayrate"] != DBNull.Value ? Convert.ToInt32((double)dr["Origpayrate"]) : null; 
             punchpayroll.Jobtype = (int?)dr["Jobtype"];
             punchpayroll.Empnum = (int?)dr["Empnum"];
-            punchpayroll.Opendate = dr["Opendate"].ToString();
+            punchpayroll.Opendate = ((DateTime)dr["Opendate"]).ToString("MM/dd/yyyy");
             punchpayroll.Shiftindex = (int?)dr["Shiftindex"];
             punchpayroll.Tip = dr["Tip"] != DBNull.Value ? Convert.ToInt32((double)dr["Tip"]) : null;
             punchpayroll.Quanvoid = dr["Quanvoid"] != DBNull.Value ? Convert.ToInt32((double)dr["Quanvoid"]) : null;
