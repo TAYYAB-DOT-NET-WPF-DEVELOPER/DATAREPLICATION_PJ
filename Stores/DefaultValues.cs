@@ -20,7 +20,7 @@ namespace DataIntegration.Stores
             { 7, "DHA6 LHR" },
             { 8, "Emporium Mall" },
             { 9, "Packages Mall" },
-            { 10, "TNB" },
+            { 33, "TNB" },
             { 11, "Gujranwala" },
             { 12, "DHA3 LHR" },
             { 13, "BT LHR" },
@@ -39,13 +39,18 @@ namespace DataIntegration.Stores
             { 27, "BT-P7 RWP" },
             { 28, "DHA2 ISB" },
             { 29, "Gujranwala 2" },
-            { 999, "Hussain Chowk" },
+            { 32, "Sialkot 2" },
+            { 31, "E 11" },
+            { 34, "Sargodha" },
+
+            { 35, "Hussain Chowk" },
             { 0, "Head Office" },
             { 1, "QCC" }
         };
 
         public int defaultdays = 1;
-        public List<string> tables = new List<string> { "DAYINFO", "POSDETAIL", "POSHEADER", "POSBANK", "PUNCHPAYROLL", "STOCKTAKEDETAIL", "EMPLOYEE"};
+     public List<string> tables = new List<string> { "DAYINFO", "POSDETAIL", "POSHEADER" ,"POSHDELIVERY", "PUNCHPAYROLL", "POSBANK", "STOCKTAKEDETAIL", "SALESTYPE", "PUNCHCLOCK"};
+    //   public List<string> tables = new List<string> { "HOWPAID", "POSHDELIVERY" };
         public ObservableCollection<DataTables> AllTables = new ObservableCollection<DataTables>();
 
         public DefaultValues()

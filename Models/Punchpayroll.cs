@@ -19,7 +19,7 @@ public partial class Punchpayroll
 
     public int? Empnum { get; set; }
 
-    public string? Opendate { get; set; }
+    public DateTime? Opendate { get; set; }
 
     public int? Shiftindex { get; set; }
 
@@ -47,7 +47,7 @@ public partial class Punchpayroll
 
     public int? Mealwaived { get; set; }
 
-    public int? Totalhours { get; set; }
+    public float? Totalhours { get; set; }
 
     public int? Breakunpaidhours { get; set; }
 
@@ -55,21 +55,21 @@ public partial class Punchpayroll
 
     public int? Breakhours { get; set; }
 
-    public int? Paidhours { get; set; }
+    public float? Paidhours { get; set; }
 
-    public int? Reghours { get; set; }
+    public float? Reghours { get; set; }
 
-    public int? Regrate { get; set; }
+    public float? Regrate { get; set; }
 
-    public int? Totalwage { get; set; }
+    public float? Totalwage { get; set; }
 
-    public int? Averagedpayrate { get; set; }
+    public float? Averagedpayrate { get; set; }
 
     public int? Revcenter { get; set; }
 
     public int? Numnosale { get; set; }
 
-    public int? Tillbalance { get; set; }
+    public float? Tillbalance { get; set; }
 
     public int Storeid { get; set; }
 }

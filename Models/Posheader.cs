@@ -13,15 +13,15 @@ public partial class Posheader
 
     public int? Numcust { get; set; }
 
-    public int? Tax1 { get; set; }
+    public float? Tax1 { get; set; }
 
     public int? Tax2 { get; set; }
 
-    public int? Tax1able { get; set; }
+    public float? Tax1able { get; set; }
 
     public int? Tax2able { get; set; }
 
-    public int? Nettotal { get; set; }
+    public float? Nettotal { get; set; }
 
     public int? Whostart { get; set; }
 
@@ -33,7 +33,7 @@ public partial class Posheader
 
     public int? Status { get; set; }
 
-    public int? Finaltotal { get; set; }
+    public float? Finaltotal { get; set; }
 
     public int? Storenum { get; set; }
 
@@ -60,6 +60,7 @@ public partial class Posheader
     public string? Refid { get; set; }
 
     public int Snum { get; set; }
+    public int? METHODNUM { get; set; }
 
     public DateTime? Opdate { get; set; }
 

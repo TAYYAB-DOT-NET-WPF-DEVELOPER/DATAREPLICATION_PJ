@@ -12,16 +12,22 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Margin="5">
+        <WrapPanel Grid.Column="0" Margin="5">
             <TextBlock Text="Select Tables to Replicate" Foreground="{DynamicResource Color12}" FontWeight="SemiBold" FontSize="14"/>
             <ItemsControl ItemsSource="{Binding AllTables}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <CheckBox Margin="5" Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+        </WrapPanel>
+
         <StackPanel Margin="5" Grid.Column="1">
             <TextBlock Text="Replication Parameters" Foreground="{DynamicResource Color12}" FontWeight="SemiBold" FontSize="14"/>
             <StackPanel Margin="5,10,0,0" Orientation="Horizontal">

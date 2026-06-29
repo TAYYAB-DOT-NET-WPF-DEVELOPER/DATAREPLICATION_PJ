@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataIntegration.Models;
 using Microsoft.EntityFrameworkCore;
+using POS.Models;
 
-namespace DataIntegration.Models;
+namespace DataIntegration.DbContexts;
 
 public partial class OracleDbContext : DbContext
 {
@@ -14,47 +16,54 @@ public partial class OracleDbContext : DbContext
         : base(options)
     {
     }
-
     public virtual DbSet<Dayinfo> Dayinfos { get; set; }
-
     public virtual DbSet<Employee> Employees { get; set; }
-
     public virtual DbSet<Jobpo> Jobpos { get; set; }
-
+    public virtual DbSet<Product> Products { get; set; }
+    public virtual DbSet<MethodPay> MethodPays { get; set; }
+    public virtual DbSet<Promo> Promos { get; set; }
     public virtual DbSet<Posbank> Posbanks { get; set; }
-
     public virtual DbSet<Posdetail> Posdetails { get; set; }
-
+    public virtual DbSet<PoshDelivery> PoshDeliveries { get; set; }
     public virtual DbSet<Posheader> Posheaders { get; set; }
-
     public virtual DbSet<Punchclock> Punchclocks { get; set; }
-
     public virtual DbSet<Punchpayroll> Punchpayrolls { get; set; }
-
     public virtual DbSet<Salestype> Salestypes { get; set; }
-
+    public virtual DbSet<HowPaid> HowPaids { get; set; }
     public virtual DbSet<Stocktakedetail> Stocktakedetails { get; set; }
-
     public virtual DbSet<XcubePayinout> XcubePayinouts { get; set; }
-
     public virtual DbSet<XcubePayment> XcubePayments { get; set; }
-
+    public virtual DbSet<Empdepartment> Empdepartments { get; set; }
+    public virtual DbSet<Member> Members { get; set; }
+   
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseOracle("Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=103.217.178.67)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=SCAR)));User Id=PJPAR;Password=PJPAR;Connection Timeout=30;");
+    {
+        // When the context is created through DI (AddDbContextFactory / AddDbContext),
+        // the connection string is already supplied there, so do nothing here.
+        if (optionsBuilder.IsConfigured)
+            return;
 
+        // Fallback for the parameterless constructor (e.g. design-time / migrations):
+        // read the connection string from configuration instead of hardcoding it.
+        var connectionString = Environment.GetEnvironmentVariable("ORACLE_CONNECTION_STRING");
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException(
+                "No connection string configured. Provide it via DI (AddDbContextFactory) " +
+                "or set the ORACLE_CONNECTION_STRING environment variable.");
+        }
+
+        optionsBuilder.UseOracle(connectionString);
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .HasDefaultSchema("PJPAR")
+            .HasDefaultSchema("PJSALE")
             .UseCollation("USING_NLS_COMP");
-
         modelBuilder.Entity<Dayinfo>(entity =>
         {
             entity.HasKey(e => new { e.Opendate, e.Snum }).HasName("DAYINFO_PK");
-
             entity.ToTable("DAYINFO");
-
             entity.Property(e => e.Opendate)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -194,6 +203,215 @@ public partial class OracleDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("WHOOPENNAME");
         });
+        modelBuilder.Entity<HowPaid>(entity =>
+        {
+            entity.HasKey(e => new { e.HowPaidLink, e.SNum }).HasName("HOWPAID_PK");
+            entity.ToTable("HOWPAID");
+            entity.Property(e => e.HowPaidLink)
+                .HasColumnType("NUMBER")
+                .HasColumnName("HOWPAIDLINK");
+            entity.Property(e => e.SNum)
+                .HasColumnType("NUMBER")
+                .HasColumnName("SNUM");
+            entity.Property(e => e.TransDate)
+                .HasColumnType("TIMESTAMP(6)")
+                .HasColumnName("TRANSDATE");
+            entity.Property(e => e.EmpNum)
+                .HasColumnType("NUMBER")
+                .HasColumnName("EMPNUM");
+            entity.Property(e => e.Tender)
+                .HasColumnType("FLOAT")
+                .HasColumnName("TENDER");
+            entity.Property(e => e.MethodNum)
+                .HasColumnType("NUMBER")
+                .HasColumnName("METHODNUM");
+            entity.Property(e => e.Change)
+                .HasColumnType("FLOAT")
+                .HasColumnName("CHANGE");
+            entity.Property(e => e.Authorized)
+                .HasColumnType("NUMBER(38,0)")
+                .HasColumnName("AUTHORIZED");
+            entity.Property(e => e.AuthCode)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("AUTHCODE");
+            entity.Property(e => e.MemCode)
+                .HasColumnType("NUMBER")
+                .HasColumnName("MEMCODE");
+            entity.Property(e => e.ExchangeRate)
+                .HasColumnType("FLOAT")
+                .HasColumnName("EXCHANGERATE");
+            entity.Property(e => e.Transact)
+                .HasColumnType("NUMBER")
+                .HasColumnName("TRANSACT");
+            entity.Property(e => e.PayType)
+                .HasColumnType("NUMBER(38,0)")
+                .HasColumnName("PAYTYPE");
+            entity.Property(e => e.OpenDate)
+                .HasColumnType("DATE")
+                .HasColumnName("OPENDATE");
+            entity.Property(e => e.PunchIndex)
+                .HasColumnType("NUMBER")
+                .HasColumnName("PUNCHINDEX");
+            entity.Property(e => e.UpdateStatus)
+                .HasColumnType("NUMBER(38,0)")
+                .HasDefaultValue(1)
+                .HasColumnName("UPDATESTATUS");
+            entity.Property(e => e.Settled)
+                .HasColumnType("NUMBER(38,0)")
+                .HasColumnName("SETTLED");
+            entity.Property(e => e.Status)
+                .HasColumnType("NUMBER(38,0)")
+                .HasColumnName("STATUS");
+
+            entity.Property(e => e.Approved)
+                .HasColumnType("NUMBER(38,0)")
+                .HasColumnName("APPROVED");
+
+            entity.Property(e => e.StatNum)
+                .HasColumnType("NUMBER")
+                .HasColumnName("STATNUM");
+
+            entity.Property(e => e.IsPayInOut)
+                .HasColumnType("NUMBER")
+                .HasColumnName("ISPAYINOUT");
+
+            entity.Property(e => e.PayReason)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("PAYREASON");
+
+            entity.Property(e => e.MealTime)
+                .HasColumnType("NUMBER(38,0)")
+                .HasColumnName("MEALTIME");
+
+            entity.Property(e => e.RevCenter)
+                .HasColumnType("NUMBER")
+                .HasColumnName("REVCENTER");
+
+            entity.Property(e => e.Voided)
+                .HasColumnType("NUMBER(38,0)")
+                .HasColumnName("VOIDED");
+
+            entity.Property(e => e.VoidedLink)
+                .HasColumnType("NUMBER")
+                .HasColumnName("VOIDEDLINK");
+
+            entity.Property(e => e.LcuDiff)
+                .HasColumnType("FLOAT")
+                .HasColumnName("LCUDIFF");
+
+            entity.Property(e => e.EnforcedGrat)
+                .HasColumnType("NUMBER(38,0)")
+                .HasColumnName("ENFORCEDGRAT");
+
+            entity.Property(e => e.GratAmount)
+                .HasColumnType("FLOAT")
+                .HasColumnName("GRATAMOUNT");
+
+            entity.Property(e => e.OrigMethodNum)
+                .HasColumnType("NUMBER")
+                .HasColumnName("ORIGMETHODNUM");
+
+            entity.Property(e => e.CardType)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("CARDTYPE");
+
+           
+        });
+        modelBuilder.Entity<Promo>(entity =>
+        {
+            entity.HasKey(p => p.PromoNum).HasName("PROMO_PK");
+
+            entity.ToTable("PROMO");
+
+            entity.Property(p => p.PromoNum)
+                .HasColumnType("integer")
+                .HasColumnName("PROMONUM");
+
+            entity.Property(p => p.Descript)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("DESCRIPT");
+
+            entity.Property(p => p.Amount)
+                .HasColumnType("float")
+                .HasColumnName("AMOUNT");
+
+            entity.Property(p => p.SecLevel)
+                .HasColumnType("smallint")
+                .HasColumnName("SECLEVEL");
+
+            entity.Property(p => p.IsActive)
+                .HasColumnType("smallint")
+                .HasColumnName("ISACTIVE");
+
+            entity.Property(p => p.Percent)
+                .HasColumnType("float")
+                .HasColumnName("PERCENT");
+
+            entity.Property(p => p.IsManual)
+                .HasColumnType("smallint")
+                .HasColumnName("ISMANUAL");
+
+            entity.Property(p => p.Tax1)
+                .HasColumnType("smallint")
+                .HasColumnName("TAX1");
+
+            entity.Property(p => p.Tax2)
+                .HasColumnType("smallint")
+                .HasColumnName("TAX2");
+
+            entity.Property(p => p.Tax3)
+                .HasColumnType("smallint")
+                .HasColumnName("TAX3");
+
+            entity.Property(p => p.Tax4)
+                .HasColumnType("smallint")
+                .HasColumnName("TAX4");
+
+            entity.Property(p => p.Tax5)
+                .HasColumnType("smallint")
+                .HasColumnName("TAX5");
+
+            entity.Property(p => p.MemberOnly)
+                .HasColumnType("smallint")
+                .HasColumnName("MEMBERONLY");
+
+            entity.Property(p => p.AmountB)
+                .HasColumnType("float")
+                .HasColumnName("AMOUNTB");
+
+            entity.Property(p => p.AmountC)
+                .HasColumnType("float")
+                .HasColumnName("AMOUNTC");
+
+            entity.Property(p => p.PercentB)
+                .HasColumnType("float")
+                .HasColumnName("PERCENTB");
+
+            entity.Property(p => p.PercentC)
+                .HasColumnType("float")
+                .HasColumnName("PERCENTC");
+
+            entity.Property(p => p.RangeStart)
+                .HasColumnType("date")
+                .HasColumnName("RANGESTART");
+
+            entity.Property(p => p.RangeEnd)
+                .HasColumnType("date")
+                .HasColumnName("RANGEEND");
+
+            entity.Property(p => p.ProdNum)
+                .HasColumnType("integer")
+                .HasColumnName("PRODNUM");
+
+            entity.Property(p => p.IsAutoProd)
+                .HasColumnType("smallint")
+                .HasColumnName("ISAUTOPROD");
+        });
+
 
         modelBuilder.Entity<Employee>(entity =>
         {
@@ -210,11 +428,11 @@ public partial class OracleDbContext : DbContext
             entity.Property(e => e.Adress1)
                 .HasMaxLength(1000)
                 .IsUnicode(false)
-                .HasColumnName("ADRESS1");
+                .HasColumnName("ADDRESS1");
             entity.Property(e => e.Adress2)
                 .HasMaxLength(1000)
                 .IsUnicode(false)
-                .HasColumnName("ADRESS2");
+                .HasColumnName("ADDRESS2");
             entity.Property(e => e.Dateentered)
                 .HasMaxLength(200)
                 .IsUnicode(false)
@@ -262,6 +480,263 @@ public partial class OracleDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("STARTWORK");
         });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.HasKey(p => new { p.Prodnum }).HasName("PRODUCT_PK");
+
+            entity.ToTable("PRODUCT");
+
+            entity.Property(p => p.Prodnum)
+                .HasColumnType("integer")
+                .HasColumnName("PRODNUM");
+
+            entity.Property(p => p.Descript)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("DESCRIPT");
+
+
+            entity.Property(p => p.Reportno)
+                .HasColumnType("integer")
+                .HasColumnName("REPORTNO");
+
+            entity.Property(p => p.Pricea)
+                .HasColumnType("double")
+                .HasColumnName("PRICEA");
+
+            entity.Property(p => p.Priceb)
+                .HasColumnType("double")
+                .HasColumnName("PRICEB");
+
+            entity.Property(p => p.Pricec)
+                .HasColumnType("double")
+                .HasColumnName("PRICEC");
+
+            entity.Property(p => p.Tax1)
+                .HasColumnType("smallint")
+                .HasColumnName("TAX1");
+
+            entity.Property(p => p.Tax2)
+                .HasColumnType("smallint")
+                .HasColumnName("TAX2");
+
+            entity.Property(p => p.Tax3)
+                .HasColumnType("smallint")
+                .HasColumnName("TAX3");
+
+            entity.Property(p => p.Tax4)
+                .HasColumnType("smallint")
+                .HasColumnName("TAX4");
+
+            entity.Property(p => p.Tax5)
+                .HasColumnType("smallint")
+                .HasColumnName("TAX5");
+
+
+            entity.Property(p => p.Seclevel)
+                .HasColumnType("smallint")
+                .HasColumnName("SECLEVEL");
+
+            entity.Property(p => p.Texempt)
+                .HasColumnType("smallint")
+                .HasColumnName("TEXEMPT");
+
+            entity.Property(p => p.Isactive)
+                .HasColumnType("smallint")
+                .HasColumnName("ISACTIVE");
+
+            entity.Property(p => p.Prodtype)
+                .HasColumnType("integer")
+                .HasColumnName("PRODTYPE");
+
+       
+
+          
+
+            entity.Property(p => p.Question1)
+                .HasColumnType("integer")
+                .HasColumnName("QUESTION1");
+
+            entity.Property(p => p.Question2)
+                .HasColumnType("integer")
+                .HasColumnName("QUESTION2");
+
+            entity.Property(p => p.Question3)
+                .HasColumnType("integer")
+                .HasColumnName("QUESTION3");
+
+            entity.Property(p => p.Question4)
+                .HasColumnType("integer")
+                .HasColumnName("QUESTION4");
+
+            entity.Property(p => p.Question5)
+                .HasColumnType("integer")
+                .HasColumnName("QUESTION5");
+
+
+            entity.Property(p => p.Manualprice)
+                .HasColumnType("smallint")
+                .HasColumnName("MANUALPRICE");
+
+            entity.Property(p => p.Pricemode)
+                .HasColumnType("double")
+                .HasColumnName("PRICEMODE");
+
+
+          
+
+
+            entity.Property(p => p.Updatestatus)
+                .HasColumnType("smallint")
+                .HasColumnName("UPDATESTATUS");
+
+            entity.Property(p => p.Featurecode)
+                .HasColumnType("float")
+                .HasColumnName("FEATURECODE");
+
+            entity.Property(p => p.Costaccountcode)
+                .HasColumnType("integer")
+                .HasColumnName("COSTACCOUNTCODE");
+
+          
+            entity.Property(p => p.Priced)
+                .HasColumnType("double")
+                .HasColumnName("PRICED");
+
+            entity.Property(p => p.Pricee)
+                .HasColumnType("double")
+                .HasColumnName("PRICEE");
+
+            entity.Property(p => p.Pricef)
+                .HasColumnType("double")
+                .HasColumnName("PRICEF");
+
+            entity.Property(p => p.Priceg)
+                .HasColumnType("double")
+                .HasColumnName("PRICEG");
+
+            entity.Property(p => p.Priceh)
+                .HasColumnType("double")
+                .HasColumnName("PRICEH");
+
+            entity.Property(p => p.Pricei)
+                .HasColumnType("double")
+                .HasColumnName("PRICEI");
+
+            entity.Property(p => p.Pricej)
+                .HasColumnType("double")
+                .HasColumnName("PRICEJ");
+
+          
+        
+
+            // Define additional configurations here, if any
+        });
+        modelBuilder.Entity<MethodPay>(entity =>
+        {
+            entity.HasKey(m => m.MethodNum).HasName("METHODPAY_PK");
+
+            entity.ToTable("METHODPAY");
+
+            entity.Property(m => m.MethodNum)
+                .HasColumnType("integer")
+                .HasColumnName("METHODNUM");
+
+            entity.Property(m => m.Currency)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("CURRENCY");
+
+            entity.Property(m => m.AuthReqR)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("AUTHREQR");
+
+            entity.Property(m => m.IsActive)
+                .HasColumnType("smallint")
+                .HasColumnName("ISACTIVE");
+
+            entity.Property(m => m.Exchange)
+                .HasColumnType("float")
+                .HasColumnName("EXCHANGE");
+
+            entity.Property(m => m.Descript)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("DESCRIPT");
+
+            entity.Property(m => m.SecLevel)
+                .HasColumnType("smallint")
+                .HasColumnName("SECLEVEL");
+
+            entity.Property(m => m.NumDecimals)
+                .HasColumnType("integer")
+                .HasColumnName("NUMDECIMALS");
+        });
+
+        modelBuilder.Entity<PoshDelivery>(entity =>
+        {
+            entity.HasKey(e => new { e.Transact, e.SNum }).HasName("POSHDELIVERY_PK");
+
+            entity.ToTable("POSHDELIVERY");
+
+            entity.Property(e => e.Transact)
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("TRANSACT");
+            entity.Property(e => e.EmpNum)
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("EMPNUM");
+            entity.Property(e => e.MemCode)
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("MEMCODE");
+            entity.Property(e => e.OpenDate)
+                .HasColumnType("DATE")
+                .HasColumnName("OPENDATE");
+            entity.Property(e => e.TimeOut)
+                .HasColumnType("TIMESTAMP(6)")
+                .HasColumnName("TIMEOUT");
+            entity.Property(e => e.TimeIn)
+                .HasColumnType("TIMESTAMP(6)")
+                .HasColumnName("TIMEIN");
+            entity.Property(e => e.PunchIndex)
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("PUNCHINDEX");
+            entity.Property(e => e.DeliveryStatus)
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("DELIVERYSTATUS");
+            entity.Property(e => e.RejectedReason)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("REJECTEDREASON");
+            entity.Property(e => e.UpdateStatus)
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("UPDATESTATUS");
+            entity.Property(e => e.SNum)
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("SNUM");
+            entity.Property(e => e.PLink)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("PLINK");
+            entity.Property(e => e.TripId)
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("TRIPID");
+            entity.Property(e => e.QLink)
+                .HasMaxLength(45)
+                .IsUnicode(false)
+                .HasColumnName("QLINK");
+            entity.Property(e => e.Delivered)
+                .HasColumnType("TIMESTAMP(6)")
+                .HasColumnName("DELIVERED");
+            entity.Property(e => e.CommissionAmt)
+                .HasColumnType("FLOAT")
+                .HasColumnName("COMMISSIONAMT");
+            entity.Property(e => e.PromptConfirmed)
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("PROMPTCONFIRMED");
+        });
+
 
         modelBuilder.Entity<Jobpo>(entity =>
         {
@@ -936,27 +1411,80 @@ public partial class OracleDbContext : DbContext
                 .HasColumnType("NUMBER")
                 .HasColumnName("VOIDEDPAYCOUNT");
         });
-        modelBuilder.HasSequence("ELECTRIC_UNITS_SEQ");
-        modelBuilder.HasSequence("HRATTENDANCE_SEQ");
-        modelBuilder.HasSequence("HRATTENDANCE_SEQ1");
-        modelBuilder.HasSequence("HRCALENDAR_SEQ");
-        modelBuilder.HasSequence("HRROSTER_SEQ");
-        modelBuilder.HasSequence("SEND_SMS_SEQ");
-        modelBuilder.HasSequence("SHAHROZ_TEST_SEQ");
-        modelBuilder.HasSequence("TEST_HRATTENDANCE_SEQ");
-        modelBuilder.HasSequence("TEST_PJ_SEQ");
-        modelBuilder.HasSequence("TEST_PJ_SEQ1");
-        modelBuilder.HasSequence("TEST_PJ_SEQ2");
-        modelBuilder.HasSequence("WEEKLY_PJI_SEQ");
-        modelBuilder.HasSequence("XCUBE_DISCOUNTDETAILS_SEQ");
-        modelBuilder.HasSequence("XCUBE_DISCOUNTDETAILS_SEQ1");
-        modelBuilder.HasSequence("XCUBE_DISCOUNTDETAILS_SEQ2");
-        modelBuilder.HasSequence("XCUBE_DISCOUNTDETAILS_SEQ3");
-        modelBuilder.HasSequence("XCUBE_DISCOUNTDETAILS_SEQ4");
-        modelBuilder.HasSequence("XCUBE_HOURLYSUMMARYGROUP_SEQ");
-        modelBuilder.HasSequence("XCUBE_PAYINOUT_SEQ");
-        modelBuilder.HasSequence("XCUBE_VOIDDETAILS_SEQ");
-        modelBuilder.HasSequence("XCUBE_VOIDDETAILS_SEQ1");
+
+        modelBuilder.Entity<Empdepartment>(entity =>
+        {
+            entity.HasKey(e => new { e.Deptnum, e.Storeid }).HasName("EMPDEPARTMENTS_PK");
+
+            entity.ToTable("EMPDEPARTMENTS");
+
+            entity.Property(e => e.Deptnum)
+                .HasColumnType("NUMBER(20)")
+                .HasColumnName("DEPTNUM");
+            entity.Property(e => e.Storeid)
+                .HasColumnType("NUMBER(20)")
+                .HasColumnName("STOREID");
+            entity.Property(e => e.Descript)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("DESCRIPT");
+            entity.Property(e => e.Isactive)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasColumnName("ISACTIVE");
+        });
+        modelBuilder.Entity<Member>(entity =>
+        {
+            entity.HasKey(e => e.Memcode).HasName("MEMBER_PK");
+
+            entity.ToTable("MEMBER");
+
+            entity.Property(e => e.Memcode)
+                .HasColumnType("NUMBER")
+                .HasColumnName("MEMCODE");
+            entity.Property(e => e.Adress1)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("ADRESS1");
+            entity.Property(e => e.Adress2)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("ADRESS2");
+            entity.Property(e => e.Firstname)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("FIRSTNAME");
+            entity.Property(e => e.Hometele).HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("HOMETELE");
+            entity.Property(e => e.Lastname)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("LASTNAME");
+            entity.Property(e => e.Lastorderdate)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("LASTORDERDATE");
+            entity.Property(e => e.Lasttrans)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("LASTTRANS");
+            entity.Property(e => e.Lasttrans2)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("LASTTRANS2");
+            entity.Property(e => e.Lasttrans3)
+                .HasMaxLength(500).IsUnicode(false)
+                .HasColumnName("LASTTRANS3");
+            entity.Property(e => e.Lastvisit)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("LASTVISIT");
+            entity.Property(e => e.Snum)
+                .HasColumnType("NUMBER")
+                .HasColumnName("SNUM");
+        });
+
 
         OnModelCreatingPartial(modelBuilder);
     }

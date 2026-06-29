@@ -1,54 +1,84 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
+using System.Threading;
 
 namespace DataIntegration.Data
 {
     public class ODBCHelper
     {
-        public static OdbcConnection GetCon()
+        private const int MaxRetries = 3; // Number of retry attempts
+        private const int RetryDelayMilliseconds = 2000; // Delay between retries
+
+        private static OdbcConnection GetCon()
         {
             return new OdbcConnection(ConfigurationManager.ConnectionStrings["ConStr"].ConnectionString);
         }
 
-        public static DataTable SelectRec(string query)
+        private static T ExecuteWithRetry<T>(Func<T> action)
         {
-            OdbcConnection con = ODBCHelper.GetCon();
-            using (con)
+            int attempt = 0;
+            while (true)
             {
-                con.Open();
-                OdbcDataAdapter da = new OdbcDataAdapter(query, con);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                return dt;
+                try
+                {
+                    return action();
+                }
+                catch (Exception ex) when (attempt < MaxRetries)
+                {
+                    attempt++;
+                    Log.Information($"Attempt {attempt} failed: {ex.Message}. Retrying in {RetryDelayMilliseconds / 1000} seconds...");
+                    Thread.Sleep(RetryDelayMilliseconds);
+                }
+                catch (Exception ex)
+                {
+                    Log.Information($"Operation failed after {MaxRetries} attempts: {ex.Message}");
+                    throw;
+                }
             }
         }
+
+        public static DataTable SelectRec(string query)
+        {
+            return ExecuteWithRetry(() =>
+            {
+                using (OdbcConnection con = GetCon())
+                {
+                    con.Open();
+                    OdbcDataAdapter da = new OdbcDataAdapter(query, con);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    return dt;
+                }
+            });
+        }
+
         public static DateTime GetMaxopendatetable()
         {
-            OdbcConnection con = ODBCHelper.GetCon();
-            using (con)
+            return ExecuteWithRetry(() =>
             {
                 string query = "SELECT max(opendate) FROM dba.dayinfo where timeend is not null";
                 DataTable result = SelectRec(query);
                 return (DateTime)result.Rows[0][0];
-                //DateTime dt = new DateTime(2023, 10, 01);
-                //return dt;
-            }
-
+            });
         }
-        public static DataTable SelectRecId(string query, params OdbcParameter[] parmerter)
+
+        public static DataTable SelectRecId(string query, params OdbcParameter[] parameters)
         {
-            OdbcConnection con = ODBCHelper.GetCon();
-            using (con)
+            return ExecuteWithRetry(() =>
             {
-                con.Open();
-                OdbcDataAdapter da = new OdbcDataAdapter(query, con);
-                da.SelectCommand.Parameters.AddRange(parmerter);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                return dt;
-            }
+                using (OdbcConnection con = GetCon())
+                {
+                    con.Open();
+                    OdbcDataAdapter da = new OdbcDataAdapter(query, con);
+                    da.SelectCommand.Parameters.AddRange(parameters);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    return dt;
+                }
+            });
         }
     }
 }

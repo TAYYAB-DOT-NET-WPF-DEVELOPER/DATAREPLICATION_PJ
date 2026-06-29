@@ -26,27 +26,27 @@ namespace DataIntegration.Data
 
             // Handling conversion from double to int?
             dayinfo.Storenum = (int?)Convert.ToInt32(dr["STORENUM"]);
-            dayinfo.Salesnet = (int?)Convert.ToInt32(dr["SALESNET"]);
-            dayinfo.Tax1 = (int?)Convert.ToDouble(dr["TAX1"]);
-            dayinfo.Salesgross = (int?)Convert.ToDouble(dr["SALESGROSS"]);
+            dayinfo.Salesnet = (float?)Convert.ToInt32(dr["SALESNET"]);
+            dayinfo.Tax1 = (float?)Convert.ToDouble(dr["TAX1"]);
+            dayinfo.Salesgross = (float?)Convert.ToDouble(dr["SALESGROSS"]);
             dayinfo.Numtrans = (int?)Convert.ToDouble(dr["NUMTRANS"]);
             dayinfo.Numcoupons = (int?)Convert.ToDouble(dr["NUMCOUPONS"]);
-            dayinfo.Couponvalue = (int?)Convert.ToDouble(dr["COUPONVALUE"]);
+            dayinfo.Couponvalue = (float?)Convert.ToDouble(dr["COUPONVALUE"]);
             dayinfo.Numvoids = (int?)Convert.ToDouble(dr["NUMVOIDS"]);
-            dayinfo.Voidvalue = (int?)Convert.ToDouble(dr["VOIDVALUE"]);
+            dayinfo.Voidvalue = (float?)Convert.ToDouble(dr["VOIDVALUE"]);
             dayinfo.Numclients = (int?)Convert.ToDouble(dr["NUMCLIENTS"]);
-            dayinfo.Clientsales = (int?)Convert.ToDouble(dr["CLIENTSALES"]);
+            dayinfo.Clientsales = (float?)Convert.ToDouble(dr["CLIENTSALES"]);
             dayinfo.Pointsawarded = (int?)Convert.ToDouble(dr["POINTSAWARDED"]);
-            dayinfo.Sumgroup1 = (int?)Convert.ToDouble(dr["SUMGROUP1"]);
-            dayinfo.Sumgroup2 = (int?)Convert.ToDouble(dr["SUMGROUP2"]);
-            dayinfo.Sumgroup3 = (int?)Convert.ToDouble(dr["SUMGROUP3"]);
-            dayinfo.Sumgroup4 = (int?)Convert.ToDouble(dr["SUMGROUP4"]);
-            dayinfo.Sumgroup5 = (int?)Convert.ToDouble(dr["SUMGROUP5"]);
-            dayinfo.Sumgroup6 = (int?)Convert.ToDouble(dr["SUMGROUP6"]);
-            dayinfo.Sumgroup7 = (int?)Convert.ToDouble(dr["SUMGROUP7"]);
-            dayinfo.Sumgroup8 = (int?)Convert.ToDouble(dr["SUMGROUP8"]);
-            dayinfo.Sumgroup9 = (int?)Convert.ToDouble(dr["SUMGROUP9"]);
-            dayinfo.Sumgroup10 = (int?)Convert.ToDouble(dr["SUMGROUP10"]);
+            dayinfo.Sumgroup1 = (float?)Convert.ToDouble(dr["SUMGROUP1"]);
+            dayinfo.Sumgroup2 = (float?)Convert.ToDouble(dr["SUMGROUP2"]);
+            dayinfo.Sumgroup3 = (float?)Convert.ToDouble(dr["SUMGROUP3"]);
+            dayinfo.Sumgroup4 = (float?)Convert.ToDouble(dr["SUMGROUP4"]);
+            dayinfo.Sumgroup5 = (float?)Convert.ToDouble(dr["SUMGROUP5"]);
+            dayinfo.Sumgroup6 = (float?)Convert.ToDouble(dr["SUMGROUP6"]);
+            dayinfo.Sumgroup7 = (float?)Convert.ToDouble(dr["SUMGROUP7"]);
+            dayinfo.Sumgroup8 = (float?)Convert.ToDouble(dr["SUMGROUP8"]);
+            dayinfo.Sumgroup9 = (float?)Convert.ToDouble(dr["SUMGROUP9"]);
+            dayinfo.Sumgroup10 = (float?)Convert.ToDouble(dr["SUMGROUP10"]);
             dayinfo.Uiid = (int?)Convert.ToInt32(dr["UID"]);
             dayinfo.Reexport = dr["REEXPORT"].ToString();
 

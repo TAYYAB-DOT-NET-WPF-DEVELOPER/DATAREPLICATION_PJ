@@ -21,8 +21,8 @@ namespace DataIntegration.Data
             posdetail.Prodnum = dr["PRODNUM"] != DBNull.Value ? (int?)dr["PRODNUM"] : null;
             posdetail.Whoorder = dr["WHOORDER"] != DBNull.Value ? (int?)dr["WHOORDER"] : null;
             posdetail.Whoauth = dr["WHOAUTH"] != DBNull.Value ? (int?)dr["WHOAUTH"] : null;
-            posdetail.Costeach = dr["COSTEACH"] != DBNull.Value ? (int?)(Convert.ToDouble(dr["COSTEACH"])) : null;
-            posdetail.Quan = dr["QUAN"] != DBNull.Value ? (int?)(Convert.ToDouble(dr["QUAN"])) : null;
+            posdetail.Costeach = dr["COSTEACH"] != DBNull.Value ? (float?)(Convert.ToDouble(dr["COSTEACH"])) : null;
+            posdetail.Quan = dr["QUAN"] != DBNull.Value ? (float?)(Convert.ToDouble(dr["QUAN"])) : null;
             posdetail.Timeord = dr["TIMEORD"] != DBNull.Value ? (DateTime?)dr["TIMEORD"] : null;
             posdetail.Notax = dr["NOTAX"] != DBNull.Value ? (short?)dr["NOTAX"] : null;
             posdetail.Howordered = dr["HOWORDERED"] != DBNull.Value ? (short?)dr["HOWORDERED"] : null;
@@ -34,11 +34,11 @@ namespace DataIntegration.Data
             posdetail.Reduceinventory = dr["REDUCEINVENTORY"] != DBNull.Value ? (short?)dr["REDUCEINVENTORY"] : null;
             posdetail.Storenum = dr["STORENUM"] != DBNull.Value ? (int?)dr["STORENUM"] : null;
             posdetail.Statnum = dr["STATNUM"] != DBNull.Value ? (int?)dr["STATNUM"] : null;
-            posdetail.Opendate = dr["OPENDATE"] != DBNull.Value ? DateTime.TryParseExact(dr["OPENDATE"].ToString(), "dd-MMM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate) ? (DateTime?)parsedDate : null: null;
+            posdetail.Opendate = dr["OPENDATE"] != DBNull.Value ? (DateTime?)dr["OPENDATE"] : null;
             posdetail.Mealtime = dr["MEALTIME"] != DBNull.Value ? (short?)dr["MEALTIME"] : null;
             posdetail.Linedes = dr["LINEDES"] != DBNull.Value ? dr["LINEDES"].ToString() : null;
             posdetail.Revcenter = dr["REVCENTER"] != DBNull.Value ? (int?)dr["REVCENTER"] : null;
-            posdetail.Discount = dr["DISCOUNT"] != DBNull.Value ? (int?)(Convert.ToDouble(dr["DISCOUNT"])) : null;
+            posdetail.Discount = dr["DISCOUNT"] != DBNull.Value ? (float?)(Convert.ToDouble(dr["DISCOUNT"])) : null;
             posdetail.Authcode = int.TryParse(dr["AUTHCODE"].ToString(), out int parsedAuthCode) ? (int?)parsedAuthCode : (int?)null;
 
             posdetail.Revcenter = dr["REVCENTER"] != DBNull.Value ? (int?)dr["REVCENTER"] : null;

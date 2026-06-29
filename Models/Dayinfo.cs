@@ -31,47 +31,47 @@ public partial class Dayinfo
 
     public int? Storenum { get; set; }
 
-    public int? Salesnet { get; set; }
+    public float? Salesnet { get; set; }
 
-    public int? Tax1 { get; set; }
+    public float? Tax1 { get; set; }
 
-    public int? Salesgross { get; set; }
+    public float? Salesgross { get; set; }
 
     public int? Numtrans { get; set; }
 
     public int? Numcoupons { get; set; }
 
-    public int? Couponvalue { get; set; }
+    public float? Couponvalue { get; set; }
 
-    public int? Numvoids { get; set; }
+    public float? Numvoids { get; set; }
 
-    public int? Voidvalue { get; set; }
+    public float? Voidvalue { get; set; }
 
     public int? Numclients { get; set; }
 
-    public int? Clientsales { get; set; }
+    public float? Clientsales { get; set; }
 
     public int? Pointsawarded { get; set; }
 
-    public int? Sumgroup1 { get; set; }
+    public float? Sumgroup1 { get; set; }
 
-    public int? Sumgroup2 { get; set; }
+    public float? Sumgroup2 { get; set; }
 
-    public int? Sumgroup3 { get; set; }
+    public float? Sumgroup3 { get; set; }
 
-    public int? Sumgroup4 { get; set; }
+    public float? Sumgroup4 { get; set; }
 
-    public int? Sumgroup5 { get; set; }
+    public float? Sumgroup5 { get; set; }
 
-    public int? Sumgroup6 { get; set; }
+    public float? Sumgroup6 { get; set; }
 
-    public int? Sumgroup7 { get; set; }
+    public float? Sumgroup7 { get; set; }
 
-    public int? Sumgroup8 { get; set; }
+    public float? Sumgroup8 { get; set; }
 
-    public int? Sumgroup9 { get; set; }
+    public float? Sumgroup9 { get; set; }
 
-    public int? Sumgroup10 { get; set; }
+    public float? Sumgroup10 { get; set; }
 
     public string? Reexport { get; set; }
 

@@ -6,92 +6,99 @@
         xmlns:local="clr-namespace:DataIntegration"
         mc:Ignorable="d"
         Title="Pixel DataIntegration"
-        Height="400" 
-        Width="550"
+        Height="500" 
+        Width="800"
         Background="Transparent"
         WindowStartupLocation="CenterScreen" 
-        WindowStyle="None"
-        ResizeMode="NoResize">
-    <Border  CornerRadius="5" Background="{DynamicResource Color1}">
+>
+    <Window.Resources>
+        <LinearGradientBrush x:Key="HeaderBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FF1E1E30" Offset="0"/>
+            <GradientStop Color="#FF45455E" Offset="1"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="BodyBackgroundBrush" Color="White" />
+    </Window.Resources>
+    <Border CornerRadius="5" Background="White">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="30"/>
-            </Grid.RowDefinitions>
-            <!-- First Row-->
-            <Grid Grid.Row="0" Grid.ColumnSpan="4" >
-                <Border CornerRadius="5,5,0,0" Background="{DynamicResource Color3}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Image Source="/Assets/Logo.png"
-                               Width="25"
-                               Height="25"
-                               Grid.Column="0"
-                               HorizontalAlignment="Left"
-                               Margin="10,0,0,0"/>
-                        <TextBlock Text="Pixel DataIntgration" 
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                               Foreground="{DynamicResource Color0}"
-                               FontSize="22"
-                               FontWeight="SemiBold"/>
-                        <Button Content="{DynamicResource Close}" 
-                                Grid.Column="2"
-                                Command="{Binding CloseWindowCommand}"
-                            Style="{DynamicResource IconButtonsStyleClose}"
-                            HorizontalAlignment="Right"
-                            Margin="0,0,10,0"/>
-                    </Grid>
-                </Border>
-            </Grid>
+                <RowDefinition Height="5*"/>
 
-            <!-- Second Row-->
-            <Border Grid.Row="1" Background="Transparent">
-                <ContentControl Content="{Binding CurrentPage}" />
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="Transparent">
+                <ListView Grid.Row="1"
+                         BorderBrush="Brown"
+                         BorderThickness="2"
+                         ItemsSource="{Binding Alllogs}" 
+                         MaxHeight="{Binding ActualHeight, ElementName=listview}"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.CanContentScroll="True"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" FontSize="25" >
+                    <ListView.View>
+                        <GridView >
+                            <GridView.Columns>
+                                <GridViewColumn Header="Description" Width="450">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Descript}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Status" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Status}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="%" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ETA}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView.Columns>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="Background" Value="Brown"/>
+                                    <Setter Property="FontSize" Value="25"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Foreground" Value="{DynamicResource Color0}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
+                        </GridView>
+                    </ListView.View>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
             </Border>
-            <!--Buttons-->
-            <Border Margin="0,0,0,5" CornerRadius="5" Grid.Row="2" Grid.ColumnSpan="4" BorderBrush="{DynamicResource Color3}" BorderThickness="1">
-            </Border>
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Button 
-                    Width="150"
-                    Margin="5,0,0,5"
-                    Command="{Binding RunCodeCommand}"
-                    Style="{DynamicResource MainButton}"
-                    Content="Run Code"/>
-                <Button 
-                    Width="150"
-                    Margin="5,0,0,5"
-                    Command="{Binding SettingsPageCommand}"
-                    Style="{DynamicResource MainButton}"
-                    Content="Settings"/>
-            </StackPanel>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border CornerRadius="5" Grid.Row="3" Grid.ColumnSpan="4" BorderBrush="{DynamicResource Color3}" BorderThickness="1">
+                <Border CornerRadius="5" Grid.Row="3" Grid.ColumnSpan="4" BorderBrush="Brown" BorderThickness="1">
                 </Border>
-                <Border CornerRadius="5" Margin="5" Grid.Row="3" Grid.Column="0" Background="{DynamicResource Color3}">
+                <Border CornerRadius="5" Margin="5" Grid.Row="3" Grid.Column="0" Background="Brown">
                     <TextBlock Text= "{Binding Storename}" FontWeight="SemiBold" Foreground="{DynamicResource Color0}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
-                <Border CornerRadius="5" Margin="5" Grid.Row="3" Grid.Column="1" Background="{DynamicResource Color3}">
+                <Border CornerRadius="5" Margin="5" Grid.Row="3" Grid.Column="1" Background="Brown">
                     <TextBlock Text= "{Binding BusinessDate}" FontWeight="SemiBold" Foreground="{DynamicResource Color0}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
-                <Border CornerRadius="5" Margin="5" Grid.Row="3" Grid.Column="2" Background="{DynamicResource Color3}">
+                <Border CornerRadius="5" Margin="5" Grid.Row="3" Grid.Column="2" Background="Brown">
                     <TextBlock Text= "{Binding CurrentTime}" FontWeight="SemiBold" Foreground="{DynamicResource Color0}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
             </Grid>
-            
         </Grid>
-
     </Border>
 </Window>

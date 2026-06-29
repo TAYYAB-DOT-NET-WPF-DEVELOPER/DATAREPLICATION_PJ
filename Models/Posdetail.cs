@@ -15,9 +15,9 @@ public partial class Posdetail
 
     public int? Whoauth { get; set; }
 
-    public int? Costeach { get; set; }
+    public float? Costeach { get; set; }
 
-    public int? Quan { get; set; }
+    public float? Quan { get; set; }
 
     public DateTime? Timeord { get; set; }
 
@@ -49,7 +49,7 @@ public partial class Posdetail
 
     public int? Revcenter { get; set; }
 
-    public int? Discount { get; set; }
+    public float? Discount { get; set; }
 
     public int? Authcode { get; set; }
 

@@ -11,7 +11,7 @@ public partial class Punchclock
 
     public string? Punchout { get; set; }
 
-    public int? Payrate { get; set; }
+    public float? Payrate { get; set; }
 
     public int? Jobtype { get; set; }
 
@@ -19,7 +19,7 @@ public partial class Punchclock
 
     public int? Storenum { get; set; }
 
-    public string? Opendate { get; set; }
+    public DateTime? Opendate { get; set; }
 
     public int? Mealtime { get; set; }
 

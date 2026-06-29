@@ -22,7 +22,7 @@ namespace DataIntegration.Data
             punchpayroll.Origpayrate = dr["Origpayrate"] != DBNull.Value ? Convert.ToInt32((double)dr["Origpayrate"]) : null; 
             punchpayroll.Jobtype = (int?)dr["Jobtype"];
             punchpayroll.Empnum = (int?)dr["Empnum"];
-            punchpayroll.Opendate = ((DateTime)dr["Opendate"]).ToString("MM/dd/yyyy");
+            punchpayroll.Opendate = dr["OPENDATE"] != DBNull.Value ? (DateTime?)dr["OPENDATE"] : null;
             punchpayroll.Shiftindex = (int?)dr["Shiftindex"];
             punchpayroll.Tip = dr["Tip"] != DBNull.Value ? Convert.ToInt32((double)dr["Tip"]) : null;
             punchpayroll.Quanvoid = dr["Quanvoid"] != DBNull.Value ? Convert.ToInt32((double)dr["Quanvoid"]) : null;
@@ -40,11 +40,11 @@ namespace DataIntegration.Data
             punchpayroll.Breakunpaidhours = dr["Breakunpaidhours"] != DBNull.Value ? Convert.ToInt32((decimal)dr["Breakunpaidhours"]) : null;
             punchpayroll.Breakpaidhours = dr["Breakpaidhours"] != DBNull.Value ? Convert.ToInt32((decimal)dr["Breakpaidhours"]) : null;
             punchpayroll.Breakhours = dr["Breakhours"] != DBNull.Value ? Convert.ToInt32((decimal)dr["Breakhours"]) : null;
-            punchpayroll.Paidhours = dr["Paidhours"] != DBNull.Value ? Convert.ToInt32((decimal)dr["Paidhours"]) : null;
-            punchpayroll.Reghours = dr["Reghours"] != DBNull.Value ? Convert.ToInt32((double)dr["Reghours"]) : null;
-            punchpayroll.Regrate = dr["Regrate"] != DBNull.Value ? Convert.ToInt32((double)dr["Regrate"]) : null;
-            punchpayroll.Totalwage = dr["Totalwage"] != DBNull.Value ? Convert.ToInt32((double)dr["Totalwage"]) : null;
-            punchpayroll.Averagedpayrate = dr["Averagedpayrate"] != DBNull.Value ? Convert.ToInt32((double)dr["Averagedpayrate"]) : null;
+            punchpayroll.Paidhours = dr["Paidhours"] != DBNull.Value ? (float)dr["Paidhours"] : null;
+            punchpayroll.Reghours = dr["Reghours"] != DBNull.Value ? ((float)dr["Reghours"]) : null;
+            punchpayroll.Regrate = dr["Regrate"] != DBNull.Value ? (float)dr["Regrate"] : null;
+            punchpayroll.Totalwage = dr["Totalwage"] != DBNull.Value ?(float)dr["Totalwage"] : null;
+            punchpayroll.Averagedpayrate = dr["Averagedpayrate"] != DBNull.Value ?(float)dr["Averagedpayrate"] : null;
             punchpayroll.Revcenter = (int?)dr["Revcenter"];
             punchpayroll.Numnosale = (int?)dr["Numnosale"];
             punchpayroll.Tillbalance = dr["Tillbalance"] != DBNull.Value ? Convert.ToInt32((double)dr["Tillbalance"]) : null;

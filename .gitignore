@@ -1,0 +1,52 @@
+## Ignore Visual Studio temporary files, builds, and user-specific settings
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/ActiveState ActiveGo)
+*.userprefs
+
+# Mono auto generated files
+mono_crash.*
+
+# Nested VS projects
+*[Nn]et[Cc]o[Rr]e[Aa]pp*
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Re]leases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio 2015/2017/2019/2022 cache directory
+.vs/
+# Generated user content
+**/Properties/PublishProfiles/
+**/dist/
+**/out/
+
+# Rider
+.idea/
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/packages/
+# template-builder templates start with metadata.json
+**/project.fragment.lock.json
+
+# Tooling
+_ReSharper*/
+*.[Re]Sharper.user
