@@ -1,4 +1,4 @@
-﻿using DataIntegration.Models;
+using DataIntegration.Models;
 using POS.Models;
 using System;
 using System.Collections.Generic;
@@ -32,5 +32,6 @@ namespace DataIntegration.Services
         Task SaveJobpos(Jobpo jobpos);
         Task DeleteEmployee(int Empnum);     
         Task DeletePosbank(Posbank posbank);
+        Task ClearTable(string tableName);
     }
 }

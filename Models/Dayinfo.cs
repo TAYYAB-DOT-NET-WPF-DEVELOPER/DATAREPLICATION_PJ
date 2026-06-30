@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace DataIntegration.Models;
@@ -77,13 +77,7 @@ public partial class Dayinfo
 
     public string? Opendate { get; set; } = null!;
 
-    public int? Repgroup { get; set; }
-
     public int Snum { get; set; }
 
-    public string? Lastupdate { get; set; }
-
-    public int? Laststore { get; set; }
-
-    public int? Uiid { get; set; }
+    public int Uiid { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using DataIntegration.Models;
 using Microsoft.EntityFrameworkCore;
@@ -43,14 +43,26 @@ public partial class OracleDbContext : DbContext
         if (optionsBuilder.IsConfigured)
             return;
 
-        // Fallback for the parameterless constructor (e.g. design-time / migrations):
-        // read the connection string from configuration instead of hardcoding it.
+        // Fallback: read from environment variable first
         var connectionString = Environment.GetEnvironmentVariable("ORACLE_CONNECTION_STRING");
         if (string.IsNullOrWhiteSpace(connectionString))
         {
+            // If not set, construct it from App.config appSettings
+            var dataSource = System.Configuration.ConfigurationManager.AppSettings["DataSource"];
+            var userId = System.Configuration.ConfigurationManager.AppSettings["UserID"];
+            var password = System.Configuration.ConfigurationManager.AppSettings["Password"];
+
+            if (!string.IsNullOrWhiteSpace(dataSource) && !string.IsNullOrWhiteSpace(userId) && !string.IsNullOrWhiteSpace(password))
+            {
+                connectionString = $"User Id={userId};Password={password};Data Source={dataSource};";
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
             throw new InvalidOperationException(
-                "No connection string configured. Provide it via DI (AddDbContextFactory) " +
-                "or set the ORACLE_CONNECTION_STRING environment variable.");
+                "No connection string configured. Please set the ORACLE_CONNECTION_STRING environment variable " +
+                "or configure UserID, Password, and DataSource in App.config.");
         }
 
         optionsBuilder.UseOracle(connectionString);
@@ -62,8 +74,8 @@ public partial class OracleDbContext : DbContext
             .UseCollation("USING_NLS_COMP");
         modelBuilder.Entity<Dayinfo>(entity =>
         {
-            entity.HasKey(e => new { e.Opendate, e.Snum }).HasName("DAYINFO_PK");
-            entity.ToTable("DAYINFO");
+            entity.HasKey(e => e.Uiid).HasName("PK_DAYINFO");
+            entity.ToTable("DAY_INFO");
             entity.Property(e => e.Opendate)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -81,13 +93,6 @@ public partial class OracleDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("EMPWAGES");
-            entity.Property(e => e.Laststore)
-                .HasColumnType("NUMBER")
-                .HasColumnName("LASTSTORE");
-            entity.Property(e => e.Lastupdate)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("LASTUPDATE");
             entity.Property(e => e.Numclients)
                 .HasColumnType("NUMBER")
                 .HasColumnName("NUMCLIENTS");
@@ -111,9 +116,6 @@ public partial class OracleDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("REEXPORT");
-            entity.Property(e => e.Repgroup)
-                .HasColumnType("NUMBER")
-                .HasColumnName("REPGROUP");
             entity.Property(e => e.Salesgross)
                 .HasColumnType("NUMBER")
                 .HasColumnName("SALESGROSS");
@@ -178,7 +180,7 @@ public partial class OracleDbContext : DbContext
                 .HasColumnName("TRANSEND");
             entity.Property(e => e.Uiid)
                 .HasColumnType("NUMBER")
-                .HasColumnName("UIID");
+                .HasColumnName("UID");
             entity.Property(e => e.Voidvalue)
                 .HasColumnType("NUMBER")
                 .HasColumnName("VOIDVALUE");
@@ -677,9 +679,9 @@ public partial class OracleDbContext : DbContext
 
         modelBuilder.Entity<PoshDelivery>(entity =>
         {
-            entity.HasKey(e => new { e.Transact, e.SNum }).HasName("POSHDELIVERY_PK");
+            entity.HasKey(e => new { e.Transact, e.SNum, e.OpenDate }).HasName("POSHDELIVERY_PK");
 
-            entity.ToTable("POSHDELIVERY");
+            entity.ToTable("POSHDELIVERY_LIVE");
 
             entity.Property(e => e.Transact)
                 .HasColumnType("NUMBER(38)")
@@ -705,10 +707,7 @@ public partial class OracleDbContext : DbContext
             entity.Property(e => e.DeliveryStatus)
                 .HasColumnType("NUMBER(38)")
                 .HasColumnName("DELIVERYSTATUS");
-            entity.Property(e => e.RejectedReason)
-                .HasMaxLength(30)
-                .IsUnicode(false)
-                .HasColumnName("REJECTEDREASON");
+           
             entity.Property(e => e.UpdateStatus)
                 .HasColumnType("NUMBER(38)")
                 .HasColumnName("UPDATESTATUS");
@@ -727,14 +726,9 @@ public partial class OracleDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("QLINK");
             entity.Property(e => e.Delivered)
-                .HasColumnType("TIMESTAMP(6)")
+                .HasMaxLength(20)
+                .IsUnicode(false)
                 .HasColumnName("DELIVERED");
-            entity.Property(e => e.CommissionAmt)
-                .HasColumnType("FLOAT")
-                .HasColumnName("COMMISSIONAMT");
-            entity.Property(e => e.PromptConfirmed)
-                .HasColumnType("NUMBER(38)")
-                .HasColumnName("PROMPTCONFIRMED");
         });
 
 
@@ -846,7 +840,7 @@ public partial class OracleDbContext : DbContext
 
         modelBuilder.Entity<Posdetail>(entity =>
         {
-            entity.HasKey(e => new { e.Uniqueid, e.Snum }).HasName("POSDETAIL_PK");
+            entity.HasKey(e => new { e.Uniqueid, e.Transact, e.Snum, e.Opendate }).HasName("POSDETAIL_PK");
 
             entity.ToTable("POSDETAIL");
 
@@ -932,11 +926,20 @@ public partial class OracleDbContext : DbContext
             entity.Property(e => e.Whoorder)
                 .HasColumnType("NUMBER")
                 .HasColumnName("WHOORDER");
+            entity.Property(e => e.Masteritem)
+                .HasColumnType("NUMBER")
+                .HasColumnName("MASTERITEM");
+            entity.Property(e => e.Netcosteach)
+                .HasColumnType("NUMBER")
+                .HasColumnName("NETCOSTEACH");
+            entity.Property(e => e.Recipecosteach)
+                .HasColumnType("NUMBER")
+                .HasColumnName("RECIPECOSTEACH");
         });
 
         modelBuilder.Entity<Posheader>(entity =>
         {
-            entity.HasKey(e => new { e.Snum, e.Transact }).HasName("POSHEADER_PK");
+            entity.HasKey(e => new { e.Transact, e.Snum, e.Opendate }).HasName("POSHEADER_PK");
 
             entity.ToTable("POSHEADER");
 

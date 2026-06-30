@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace DataIntegration.Models;
@@ -58,4 +58,8 @@ public partial class Posdetail
     public int? Repgroup { get; set; }
 
     public int? Istestdata { get; set; }
+
+    public int? Masteritem { get; set; }
+    public float? Netcosteach { get; set; }
+    public float? Recipecosteach { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿using DataIntegration.Models;
+using DataIntegration.Models;
 using System;
 using System.Configuration;
 using System.Data;
@@ -20,14 +20,12 @@ namespace DataIntegration.Data
                 poshDelivery.TimeIn = dr["TimeIn"] != DBNull.Value ? (DateTime?)Convert.ToDateTime(dr["TimeIn"]) : null;
                 poshDelivery.PunchIndex = dr["PunchIndex"] != DBNull.Value ? (int?)Convert.ToInt32(dr["PunchIndex"]) : null;
                 poshDelivery.DeliveryStatus = dr["DeliveryStatus"] != DBNull.Value ? (short?)Convert.ToInt16(dr["DeliveryStatus"]) : (short?)0; // Default to 0
-                poshDelivery.RejectedReason = dr["RejectedReason"] != DBNull.Value ? dr["RejectedReason"].ToString() : null;
+               
                 poshDelivery.UpdateStatus = dr["UpdateStatus"] != DBNull.Value ? (short?)Convert.ToInt16(dr["UpdateStatus"]) : (short?)1; // Default to 1
                 poshDelivery.PLink = dr["PLink"] != DBNull.Value ? dr["PLink"].ToString() : null;
                 poshDelivery.TripId = dr["TripId"] != DBNull.Value ? (int?)Convert.ToInt32(dr["TripId"]) : null;
                 poshDelivery.QLink = dr["QLink"] != DBNull.Value ? dr["QLink"].ToString() : null;
-                poshDelivery.Delivered = dr["Delivered"] != DBNull.Value ? (DateTime?)Convert.ToDateTime(dr["Delivered"]) : null;
-                poshDelivery.CommissionAmt = dr["CommissionAmt"] != DBNull.Value ? (double?)Convert.ToDouble(dr["CommissionAmt"]) : null;
-                poshDelivery.PromptConfirmed = dr["PromptConfirmed"] != DBNull.Value ? (short?)Convert.ToInt16(dr["PromptConfirmed"]) : (short?)0; // Default to 0
+                poshDelivery.Delivered = dr["Delivered"] != DBNull.Value ? Convert.ToDateTime(dr["Delivered"]).ToString("yyyy-MM-dd HH:mm:ss") : null;
 
                 poshDelivery.SNum = Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString());
             }

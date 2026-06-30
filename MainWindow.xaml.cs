@@ -1,4 +1,4 @@
-﻿using DataIntegration.Views;
+using DataIntegration.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,5 +54,12 @@ namespace DataIntegration
             return enteredPassword == correctPassword;
         }
 
+        private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+        }
     }
 }

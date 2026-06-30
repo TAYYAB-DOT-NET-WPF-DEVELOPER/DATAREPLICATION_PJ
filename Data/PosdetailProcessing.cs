@@ -1,4 +1,4 @@
-﻿using DataIntegration.Models;
+using DataIntegration.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -40,6 +40,9 @@ namespace DataIntegration.Data
             posdetail.Revcenter = dr["REVCENTER"] != DBNull.Value ? (int?)dr["REVCENTER"] : null;
             posdetail.Discount = dr["DISCOUNT"] != DBNull.Value ? (float?)(Convert.ToDouble(dr["DISCOUNT"])) : null;
             posdetail.Authcode = int.TryParse(dr["AUTHCODE"].ToString(), out int parsedAuthCode) ? (int?)parsedAuthCode : (int?)null;
+            posdetail.Masteritem = dr["MASTERITEM"] != DBNull.Value ? (int?)Convert.ToInt32(dr["MASTERITEM"]) : null;
+            posdetail.Netcosteach = dr["NETCOSTEACH"] != DBNull.Value ? (float?)Convert.ToSingle(dr["NETCOSTEACH"]) : null;
+            posdetail.Recipecosteach = dr["RECIPECOSTEACH"] != DBNull.Value ? (float?)Convert.ToSingle(dr["RECIPECOSTEACH"]) : null;
 
             posdetail.Revcenter = dr["REVCENTER"] != DBNull.Value ? (int?)dr["REVCENTER"] : null;
 

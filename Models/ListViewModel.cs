@@ -1,4 +1,4 @@
-﻿using DataIntegration.Bases;
+using DataIntegration.Bases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,11 @@ namespace DataIntegration.Models
     {
         private string _eta;
         private string _status;
+        private bool _isSelected = true;
+        private double _progressValue;
+
         public string? Descript { get; set; }
+
         public string ETA
         {
             get { return _eta; }
@@ -21,6 +25,7 @@ namespace DataIntegration.Models
                 OnPropertyChanged(nameof(ETA));
             }
         }
+
         public string Status
         {
             get { return _status; }
@@ -28,6 +33,26 @@ namespace DataIntegration.Models
             {
                 _status = value;
                 OnPropertyChanged(nameof(Status));
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged(nameof(IsSelected));
+            }
+        }
+
+        public double ProgressValue
+        {
+            get { return _progressValue; }
+            set
+            {
+                _progressValue = value;
+                OnPropertyChanged(nameof(ProgressValue));
             }
         }
     }

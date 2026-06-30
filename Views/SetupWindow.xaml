@@ -1,0 +1,204 @@
+<Window x:Class="DataIntegration.Views.SetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="First Time Setup" 
+        Height="620" 
+        Width="550"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="#0F0F1A"
+        ResizeMode="NoResize">
+    
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <!-- Style for TextBoxes -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#222235"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#2E2E42"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="4"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <!-- Style for Labels -->
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,5,0,2"/>
+        </Style>
+    </Window.Resources>
+
+    <Border BorderBrush="#2E2E42" BorderThickness="1" CornerRadius="12" Background="#0F0F1A">
+        <Grid Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title Section -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                <TextBlock Text="APPLICATION SETUP" FontSize="20" FontWeight="ExtraBold" Foreground="#0D9488" HorizontalAlignment="Center"/>
+                <TextBlock Text="Configure your store and database parameters for the first run." FontSize="11" Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                <Border Height="1" Background="#2E2E42" Margin="0,15,0,0"/>
+            </StackPanel>
+
+            <!-- Fields Section -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                <StackPanel>
+                    <!-- Store Configuration Group -->
+                    <TextBlock Text="Store Configuration" FontSize="13" FontWeight="Bold" Foreground="White" Margin="0,5,0,5"/>
+                    <Border Background="#181826" CornerRadius="8" Padding="15" BorderBrush="#2E2E42" BorderThickness="1" Margin="0,0,0,15">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <Label Content="STORE ID"/>
+                                <TextBox x:Name="txtStoreId" Text="230"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <Label Content="STORE NAME"/>
+                                <TextBox x:Name="txtStoreName" Text="Store-230"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,10,10,0">
+                                <Label Content="DEFAULT DAYS TO SYNC"/>
+                                <TextBox x:Name="txtDays" Text="1"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Oracle Database Configuration Group -->
+                    <TextBlock Text="Oracle Destination Database" FontSize="13" FontWeight="Bold" Foreground="White" Margin="0,5,0,5"/>
+                    <Border Background="#181826" CornerRadius="8" Padding="15" BorderBrush="#2E2E42" BorderThickness="1" Margin="0,0,0,15">
+                        <StackPanel>
+                            <Label Content="DATA SOURCE (HOST:PORT/SERVICE)"/>
+                            <TextBox x:Name="txtDataSource" Text="cc.eoi.wecreatives.agency:1525/SCAR"/>
+
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                    <Label Content="USER ID"/>
+                                    <TextBox x:Name="txtUserId" Text="PJSALE"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                    <Label Content="PASSWORD"/>
+                                    <TextBox x:Name="txtPassword" Text="PJSALE"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- WhatsApp Notification Group -->
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                        <TextBlock Text="WhatsApp Notifications" FontSize="13" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                        <CheckBox x:Name="chkWhatsApp" Margin="15,0,0,0" IsChecked="True" VerticalAlignment="Center" Content="Enable Notifications" Foreground="#94A3B8"/>
+                    </StackPanel>
+                    <Border Background="#181826" CornerRadius="8" Padding="15" BorderBrush="#2E2E42" BorderThickness="1">
+                        <StackPanel Visibility="{Binding IsChecked, ElementName=chkWhatsApp, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                    <Label Content="WHATSAPP PHONE NUMBER"/>
+                                    <TextBox x:Name="txtWhatsAppPhone" Text="+923021656678"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                    <Label Content="WHATSAPP TOKEN"/>
+                                    <TextBox x:Name="txtWhatsAppToken" Text="hlinq7ipyknr5mu5"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Label Content="WHATSAPP API URL" Margin="0,10,0,2"/>
+                            <TextBox x:Name="txtWhatsAppUrl" Text="https://api.ultramsg.com/instance183090/messages/chat"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Buttons Section -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Content="Save &amp; Launch" Click="SaveButton_Click" Height="40" FontSize="13" FontWeight="Bold" Foreground="White" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#0D9488" Offset="0"/>
+                                        <GradientStop Color="#115E59" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#0F766E"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Grid.Column="1" Content="Exit" Click="ExitButton_Click" Width="80" Height="40" Margin="15,0,0,0" Background="Transparent" Foreground="#94A3B8" BorderBrush="#2E2E42" BorderThickness="1" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="#EF4444"/>
+                                    <Setter Property="BorderBrush" Value="#EF4444"/>
+                                    <Setter Property="Background" Value="#251C24"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

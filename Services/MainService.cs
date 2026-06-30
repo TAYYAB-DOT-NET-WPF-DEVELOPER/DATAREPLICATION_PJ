@@ -1,4 +1,4 @@
-﻿using DataIntegration.DbContexts;
+using DataIntegration.DbContexts;
 using DataIntegration.Models;
 using Microsoft.EntityFrameworkCore;
 using POS.Models;
@@ -51,11 +51,12 @@ namespace DataIntegration.Services
         // -----------------------------------------------------------------
 
         public Task SaveDayInfo(Dayinfo dayinfo) =>
-            UpsertAsync(dayinfo, x => x.Opendate == dayinfo.Opendate && x.Snum == dayinfo.Snum);
+            UpsertAsync(dayinfo, x => x.Uiid == dayinfo.Uiid);
 
         public Task SavePosdetail(Posdetail posdetail) =>
             UpsertAsync(posdetail, x => x.Opendate == posdetail.Opendate
                                      && x.Snum == posdetail.Snum
+                                     && x.Transact == posdetail.Transact
                                      && x.Uniqueid == posdetail.Uniqueid);
 
         public Task SavePoshdelivery(PoshDelivery poshDelivery) =>
@@ -238,6 +239,20 @@ namespace DataIntegration.Services
             catch (Exception ex)
             {
                 Log.Error(ex, "Delete failed for {Entity}.", typeof(TEntity).Name);
+                throw;
+            }
+        }
+
+        public async Task ClearTable(string tableName)
+        {
+            try
+            {
+                using var db = _contextFactory.CreateDbContext();
+                await db.Database.ExecuteSqlRawAsync($"DELETE FROM {tableName}").ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to clear table {Table}.", tableName);
                 throw;
             }
         }

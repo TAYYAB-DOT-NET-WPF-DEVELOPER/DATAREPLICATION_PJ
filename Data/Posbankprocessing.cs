@@ -1,4 +1,4 @@
-﻿using DataIntegration.Models;
+using DataIntegration.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,7 +21,7 @@ namespace DataIntegration.Data
             posbank.Methodnum = (int)dr["METHODNUM"];
             posbank.Calctendered = (int?)Convert.ToDouble(dr["CALCTENDERED"]);
             posbank.Exchangerate = (int)Convert.ToDouble(dr["EXCHANGERATE"]);
-            posbank.Dateentered = !string.IsNullOrEmpty(dr["DATEENTERED"].ToString()) ? Convert.ToDateTime(dr["DATEENTERED"]).ToString("dd-MM-yyyy hh:mm:ss") : null;
+            posbank.Dateentered = !string.IsNullOrEmpty(dr["DATEENTERED"].ToString()) ? Convert.ToDateTime(dr["DATEENTERED"]).ToString("yyyy-MM-dd HH:mm:ss") : null;
             posbank.Entrytype = (int)(short)dr["ENTRYTYPE"];
             posbank.Refcode = dr["RefCode"].ToString();
             posbank.Opendate = dr["OPENDATE"] != DBNull.Value ? (DateTime?)dr["OPENDATE"] : null;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,14 +16,11 @@ namespace DataIntegration.Models
         public DateTime? TimeIn { get; set; }
         public int? PunchIndex { get; set; }
         public short? DeliveryStatus { get; set; }
-        public string RejectedReason { get; set; }
         public short? UpdateStatus { get; set; }
         public int? SNum { get; set; }
         public string PLink { get; set; }
         public int? TripId { get; set; }
         public string QLink { get; set; }
-        public DateTime? Delivered { get; set; }
-        public double? CommissionAmt { get; set; }
-        public short? PromptConfirmed { get; set; }
+        public string Delivered { get; set; }
     }
 }
