@@ -13,7 +13,7 @@ namespace DataIntegration.Services
         Task SaveDayInfo(Dayinfo dayinfo);
         Task DeletePunchclock(int uniquied, int? snum);
         Task DeletePunchPayRoll(int uniquied, int? snum);
-        Task DeleteDayinfo(string opendate, int? snum);
+        Task DeleteDayinfo(DateTime? opendate, int? snum);
         Task SavePosdetail(Posdetail posdetail);
         Task SavePoshdelivery(PoshDelivery poshDelivery);
         Task SaveProduct(Product Products);

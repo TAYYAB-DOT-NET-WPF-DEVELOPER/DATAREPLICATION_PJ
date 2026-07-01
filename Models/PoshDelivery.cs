@@ -18,9 +18,9 @@ namespace DataIntegration.Models
         public short? DeliveryStatus { get; set; }
         public short? UpdateStatus { get; set; }
         public int? SNum { get; set; }
-        public string PLink { get; set; }
+        public string? PLink { get; set; }
         public int? TripId { get; set; }
-        public string QLink { get; set; }
-        public string Delivered { get; set; }
+        public string? QLink { get; set; }
+        public string? Delivered { get; set; }
     }
 }

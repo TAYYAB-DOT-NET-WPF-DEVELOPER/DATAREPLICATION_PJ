@@ -81,7 +81,7 @@ namespace DataIntegration
 
             // Initialize and hide the main window
             _mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            _mainWindow.WindowState = WindowState.Minimized;
+            _mainWindow.WindowState = WindowState.Normal;
             _mainWindow.ShowInTaskbar = false;
             _mainWindow.Visibility = Visibility.Hidden;
 
@@ -181,13 +181,11 @@ namespace DataIntegration
         {
             if (_mainWindow.Visibility == Visibility.Visible)
             {
-                _mainWindow.WindowState = WindowState.Minimized;
                 _mainWindow.Visibility = Visibility.Hidden;
             }
             else
             {
                 _mainWindow.Visibility = Visibility.Visible;
-                _mainWindow.WindowState = WindowState.Normal;
                 _mainWindow.Activate();
             }
         }

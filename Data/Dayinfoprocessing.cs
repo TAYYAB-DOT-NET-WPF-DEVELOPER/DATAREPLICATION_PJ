@@ -11,9 +11,9 @@ namespace DataIntegration.Data
         {
             Dayinfo dayinfo = new Dayinfo();
 
-            dayinfo.Transdate = !string.IsNullOrEmpty(dr["TRANSDATE"].ToString()) ? Convert.ToDateTime(dr["TRANSDATE"]).ToString("yyyy-MM-dd") : null;
-            dayinfo.Timestart = !string.IsNullOrEmpty(dr["TIMESTART"].ToString()) ? Convert.ToDateTime(dr["TIMESTART"]).ToString("yyyy-MM-dd HH:mm:ss") : null;
-            dayinfo.Timeend = !string.IsNullOrEmpty(dr["TIMEEND"].ToString()) ? Convert.ToDateTime(dr["TIMEEND"]).ToString("yyyy-MM-dd HH:mm:ss") : null;
+            dayinfo.Transdate = dr["TRANSDATE"] != DBNull.Value ? Convert.ToDateTime(dr["TRANSDATE"]) : DateTime.MinValue;
+            dayinfo.Timestart = dr["TIMESTART"] != DBNull.Value ? (DateTime?)Convert.ToDateTime(dr["TIMESTART"]) : null;
+            dayinfo.Timeend = dr["TIMEEND"] != DBNull.Value ? (DateTime?)Convert.ToDateTime(dr["TIMEEND"]) : null;
             dayinfo.Transend = dr["TRANSEND"].ToString();
             dayinfo.Weather = dr["WEATHER"].ToString();
             dayinfo.Whoopen = dr["WHOOPEN"].ToString();
@@ -52,7 +52,7 @@ namespace DataIntegration.Data
 
 
             dayinfo.Snum = Convert.ToInt32(ConfigurationManager.AppSettings["StoreId"].ToString());
-            dayinfo.Opendate = !string.IsNullOrEmpty(dr["OPENDATE"].ToString()) ? Convert.ToDateTime(dr["OPENDATE"]).ToString("yyyy-MM-dd") : null;
+            dayinfo.Opendate = dr["OPENDATE"] != DBNull.Value ? (DateTime?)Convert.ToDateTime(dr["OPENDATE"]) : null;
 
 
             return dayinfo;

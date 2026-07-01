@@ -5,11 +5,11 @@ namespace DataIntegration.Models;
 
 public partial class Dayinfo
 {
-    public string? Transdate { get; set; }
+    public DateTime Transdate { get; set; }
 
-    public string? Timestart { get; set; }
+    public DateTime? Timestart { get; set; }
 
-    public string? Timeend { get; set; }
+    public DateTime? Timeend { get; set; }
 
     public string? Transend { get; set; }
 
@@ -75,7 +75,7 @@ public partial class Dayinfo
 
     public string? Reexport { get; set; }
 
-    public string? Opendate { get; set; } = null!;
+    public DateTime? Opendate { get; set; }
 
     public int Snum { get; set; }
 

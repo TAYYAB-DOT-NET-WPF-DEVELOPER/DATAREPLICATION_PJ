@@ -125,7 +125,7 @@ namespace DataIntegration.Services
         // for explicit removals and interface compatibility.
         // -----------------------------------------------------------------
 
-        public Task DeleteDayinfo(string opendate, int? snum) =>
+        public Task DeleteDayinfo(DateTime? opendate, int? snum) =>
             DeleteAsync<Dayinfo>(x => x.Opendate == opendate && x.Snum == snum);
 
         public Task DeleteEmployee(int Empnum) =>

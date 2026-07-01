@@ -77,8 +77,7 @@ public partial class OracleDbContext : DbContext
             entity.HasKey(e => e.Uiid).HasName("PK_DAYINFO");
             entity.ToTable("DAY_INFO");
             entity.Property(e => e.Opendate)
-                .HasMaxLength(100)
-                .IsUnicode(false)
+                .HasColumnType("DATE")
                 .HasColumnName("OPENDATE");
             entity.Property(e => e.Snum)
                 .HasColumnType("NUMBER")
@@ -163,16 +162,13 @@ public partial class OracleDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("TEMPERATURE");
             entity.Property(e => e.Timeend)
-                .HasMaxLength(100)
-                .IsUnicode(false)
+                .HasColumnType("TIMESTAMP(6)")
                 .HasColumnName("TIMEEND");
             entity.Property(e => e.Timestart)
-                .HasMaxLength(100)
-                .IsUnicode(false)
+                .HasColumnType("TIMESTAMP(6)")
                 .HasColumnName("TIMESTART");
             entity.Property(e => e.Transdate)
-                .HasMaxLength(100)
-                .IsUnicode(false)
+                .HasColumnType("TIMESTAMP(6)")
                 .HasColumnName("TRANSDATE");
             entity.Property(e => e.Transend)
                 .HasMaxLength(100)

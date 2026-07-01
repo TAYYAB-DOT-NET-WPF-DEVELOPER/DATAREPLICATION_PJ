@@ -165,6 +165,13 @@ namespace DataIntegration.ViewModels
 
             ConfigureClock();
             ConfigureSyncTimers();
+
+            // Trigger automatic sync of selected tables on startup after 2 seconds
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(2000);
+                await RunAllNowAsync();
+            });
         }
 
         public bool IsDateSelected
@@ -309,10 +316,10 @@ namespace DataIntegration.ViewModels
         {
             _posHeaderTimer = CreateTimer(TimeSpan.FromMinutes(1), PosHeaderTick);
             _posDetailTimer = CreateTimer(TimeSpan.FromMinutes(1), PosDetailTick);
-            _dayInfoTimer = CreateTimer(TimeSpan.FromHours(2), DayInfoTick);
-            _punchClockTimer = CreateTimer(TimeSpan.FromHours(1), PunchClockTick);
-            _punchPayrollTimer = CreateTimer(TimeSpan.FromHours(1), PunchPayrollTick);
-            _posHDeliveryTimer = CreateTimer(TimeSpan.FromHours(1), PosHDeliveryTick);
+            _dayInfoTimer = CreateTimer(TimeSpan.FromMinutes(2), DayInfoTick);
+            _punchClockTimer = CreateTimer(TimeSpan.FromMinutes(1), PunchClockTick);
+            _punchPayrollTimer = CreateTimer(TimeSpan.FromMinutes(1), PunchPayrollTick);
+            _posHDeliveryTimer = CreateTimer(TimeSpan.FromMinutes(1), PosHDeliveryTick);
             _posBankTimer = CreateTimer(TimeSpan.FromHours(1), PosBankTick);
             _memberTimer = CreateTimer(TimeSpan.FromHours(2), MemberTick);
             _productTimer = CreateTimer(TimeSpan.FromHours(4), ProductTick);
@@ -396,11 +403,6 @@ namespace DataIntegration.ViewModels
             await RunIfFreeAsync(_posHDeliveryGate, ct => ProcessPosHDeliveryAsync(true, start, end, ct)).ConfigureAwait(false);
             await RunIfFreeAsync(_posBankGate, ct => ProcessPosBankAsync(true, start, end, ct)).ConfigureAwait(false);
             await RunIfFreeAsync(_memberGate, ct => ProcessMemberAsync(true, start, end, ct)).ConfigureAwait(false);
-            await RunIfFreeAsync(_productGate, ct => ProcessProductAsync(true, start, end, ct)).ConfigureAwait(false);
-            await RunIfFreeAsync(_promoGate, ct => ProcessPromoAsync(true, start, end, ct)).ConfigureAwait(false);
-            await RunIfFreeAsync(_methodPayGate, ct => ProcessMethodPayAsync(true, start, end, ct)).ConfigureAwait(false);
-            await RunIfFreeAsync(_employeeGate, ct => ProcessEmployeeAsync(true, start, end, ct)).ConfigureAwait(false);
-            await RunIfFreeAsync(_salesTypeGate, ct => ProcessSalesTypeAsync(true, start, end, ct)).ConfigureAwait(false);
         }
 
         private Task ProcessPosHeaderAsync(bool isManual, DateTime? start, DateTime? end, CancellationToken ct) =>
@@ -424,8 +426,28 @@ namespace DataIntegration.ViewModels
         private Task ProcessPosBankAsync(bool isManual, DateTime? start, DateTime? end, CancellationToken ct) =>
             ProcessTableAsync(_posBankLog, _queryStrings.POSBANK, "OPENDATE", false, isManual, start, end, row => _posBankProcessor.processposbank(row), entity => _mainService.SavePosbank(entity), ct);
 
-        private Task ProcessMemberAsync(bool isManual, DateTime? start, DateTime? end, CancellationToken ct) =>
-            ProcessTableAsync(_memberLog, _queryStrings.MEMBER, null, false, isManual, start, end, row => _memberProcessor.ProcessMember(row), entity => _mainService.SaveMember(entity), ct);
+        private Task ProcessMemberAsync(bool isManual, DateTime? start, DateTime? end, CancellationToken ct)
+        {
+            string memberQuery = _queryStrings.MEMBER;
+            if (isManual)
+            {
+                if (IsDateSelected && start.HasValue)
+                {
+                    memberQuery += $" and memcode in (select memcode from dba.posheader where opendate = '{start.Value:yyyy-MM-dd}')";
+                }
+                else
+                {
+                    string maxDateSubquery = "(select max(opendate) from dba.posheader)";
+                    memberQuery += $" and memcode in (select memcode from dba.posheader where opendate >= {maxDateSubquery} - {SelectedDays} and opendate <= {maxDateSubquery})";
+                }
+            }
+            else
+            {
+                memberQuery += " and memcode in (select memcode from dba.posheader where opendate = (select max(opendate) from dba.posheader))";
+            }
+
+            return ProcessTableAsync(_memberLog, memberQuery, null, false, isManual, start, end, row => _memberProcessor.ProcessMember(row), entity => _mainService.SaveMember(entity), ct);
+        }
 
         private Task ProcessProductAsync(bool isManual, DateTime? start, DateTime? end, CancellationToken ct) =>
             ProcessTableAsync(_productLog, _queryStrings.PRODUCT, null, false, isManual, start, end, row => _productProcessor.ProcessProduct(row), entity => _mainService.SaveProduct(entity), ct, "PRODUCT");

@@ -54,6 +54,11 @@ namespace DataIntegration
             return enteredPassword == correctPassword;
         }
 
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
+        }
+
         private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
