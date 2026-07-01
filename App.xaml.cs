@@ -17,6 +17,7 @@ namespace DataIntegration
         private IServiceProvider _serviceProvider;
         private NotifyIcon _trayIcon;
         private Window _mainWindow;
+        private static System.Threading.Mutex? _mutex;
 
         public App()
         {
@@ -46,6 +47,21 @@ namespace DataIntegration
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            const string appMutexName = "Global\\PixelDataIntegrationUniqueMutex";
+            _mutex = new System.Threading.Mutex(true, appMutexName, out bool createdNew);
+
+            if (!createdNew)
+            {
+                System.Windows.MessageBox.Show(
+                    "An instance of the Pixel Data Integration application is already running.",
+                    "Application Already Running",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+
+                Environment.Exit(0);
+                return;
+            }
+
             base.OnStartup(e);
 
             // If this is the first run, show the setup window
@@ -109,6 +125,18 @@ namespace DataIntegration
         {
             try
             {
+                // Release and dispose of the mutex so the new instance is not blocked from starting
+                if (_mutex != null)
+                {
+                    try
+                    {
+                        _mutex.ReleaseMutex();
+                        _mutex.Dispose();
+                        _mutex = null;
+                    }
+                    catch { }
+                }
+
                 // Get the path of the actual running .exe file
                 string exeFile = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
 
@@ -195,6 +223,17 @@ namespace DataIntegration
             _restartTimer?.Stop();
             _whatsAppTimer?.Stop();
             _trayIcon.Dispose();
+
+            if (_mutex != null)
+            {
+                try
+                {
+                    _mutex.ReleaseMutex();
+                    _mutex.Dispose();
+                }
+                catch { }
+            }
+
             base.OnExit(e);
         }
     }

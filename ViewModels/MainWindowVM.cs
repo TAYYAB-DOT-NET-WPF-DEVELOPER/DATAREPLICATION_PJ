@@ -437,8 +437,23 @@ namespace DataIntegration.ViewModels
                 }
                 else
                 {
-                    string maxDateSubquery = "(select max(opendate) from dba.posheader)";
-                    memberQuery += $" and memcode in (select memcode from dba.posheader where opendate >= {maxDateSubquery} - {SelectedDays} and opendate <= {maxDateSubquery})";
+                    DateTime maxDate = DateTime.Today;
+                    try
+                    {
+                        using (var maxDateDt = ODBCHelper.SelectRec("select max(opendate) from dba.posheader"))
+                        {
+                            if (maxDateDt.Rows.Count > 0 && maxDateDt.Rows[0][0] != DBNull.Value)
+                            {
+                                maxDate = Convert.ToDateTime(maxDateDt.Rows[0][0]);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Failed to retrieve max opendate from posheader in ProcessMemberAsync. Falling back to today.");
+                    }
+                    var calculatedStartDate = maxDate.AddDays(-SelectedDays);
+                    memberQuery += $" and memcode in (select memcode from dba.posheader where opendate >= '{calculatedStartDate:yyyy-MM-dd}' and opendate <= '{maxDate:yyyy-MM-dd}')";
                 }
             }
             else
@@ -502,8 +517,25 @@ namespace DataIntegration.ViewModels
                 }
                 else
                 {
-                    string maxDateSubquery = "(select max(opendate) from dba.posheader)";
-                    query = baseQuery + (isPunchClock ? $" {dateColumn} >= {maxDateSubquery} - {SelectedDays} and {dateColumn} <= {maxDateSubquery}" : $" and {dateColumn} >= {maxDateSubquery} - {SelectedDays} and {dateColumn} <= {maxDateSubquery}");
+                    DateTime maxDate = DateTime.Today;
+                    try
+                    {
+                        using (var maxDateDt = ODBCHelper.SelectRec("select max(opendate) from dba.posheader"))
+                        {
+                            if (maxDateDt.Rows.Count > 0 && maxDateDt.Rows[0][0] != DBNull.Value)
+                            {
+                                maxDate = Convert.ToDateTime(maxDateDt.Rows[0][0]);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Failed to retrieve max opendate from posheader in ProcessTableAsync. Falling back to today.");
+                    }
+                    var calculatedStartDate = maxDate.AddDays(-SelectedDays);
+                    query = baseQuery + (isPunchClock 
+                        ? $" {dateColumn} >= '{calculatedStartDate:yyyy-MM-dd}' and {dateColumn} <= '{maxDate:yyyy-MM-dd}'" 
+                        : $" and {dateColumn} >= '{calculatedStartDate:yyyy-MM-dd}' and {dateColumn} <= '{maxDate:yyyy-MM-dd}'");
                 }
             }
             else
